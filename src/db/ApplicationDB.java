@@ -12,7 +12,7 @@ public class ApplicationDB {
 
     public Connection getConnection(){
         //Create a connection string
-        String connectionUrl = "jdbc:mysql://cs336-choochoo.c1kex6lbnshj.us-east-2.rds.amazonaws.com:3306/test1";
+        String connectionUrl = "jdbc:mysql://cs336-choochoo.c1kex6lbnshj.us-east-2.rds.amazonaws.com:3306";
         Connection connection = null;
 
         try {
@@ -38,7 +38,6 @@ public class ApplicationDB {
         }
 
         return connection;
-
     }
 
     public void closeConnection(Connection connection){
