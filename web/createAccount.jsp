@@ -20,19 +20,27 @@
                 username = username.trim().toLowerCase();
 
                 String password = request.getParameter("password");
+                String cpassword = request.getParameter("c_password");
 
-                // Create a new salt that will be tied to this account
-                int salt = Encrypt.getNewSalt();
+                if(!password.equals(cpassword)) {
+                    //out.print("Passwords do not match"); %>
+                    <p style="color: red">Passwords do not match</p>
+                    <jsp:include page="createAccountPage.jsp"/> <%
+                } else {
+                    // Create a new salt that will be tied to this account
+                    int salt = Encrypt.getNewSalt();
 
-                // Create a new user using the username, salt, and password (Encrypted and salted)
-                String str = "INSERT INTO login.logins " +
-                             "VALUES ('" + username + "', '" + salt + "', '" + Encrypt.hashNewPassword(salt, password) + "');";
+                    // Create a new user using the username, salt, and password (Encrypted and salted)
+                    String str = "INSERT INTO login.logins " +
+                                 "VALUES ('" + username + "', '" + salt + "', '" + Encrypt.hashNewPassword(salt, password) + "');";
 
-                Statement s = con.createStatement();
-                s.executeUpdate(str); %>
-                <jsp:include page="index.jsp"/> <%
+                    Statement s = con.createStatement();
+                    s.executeUpdate(str);
+                    out.print("Account Creation Successful"); %>
+                    <jsp:include page="index.jsp"/> <%
 
-                db.closeConnection(con);
+                    db.closeConnection(con);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

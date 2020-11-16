@@ -6,6 +6,7 @@
     </head>
 
     <body>
+    <h1>Welcome to</h1><h1 style="font-family: 'Comic Sans MS',serif; font-size: 4em">T R A I N</h1>
     <br>
         <form method="post" action="login.jsp">
             <table>
@@ -18,15 +19,7 @@
             </table>
             <input type="submit" value="Login">
         </form>
-        <form method="post" action="createAccount.jsp">
-            <table>
-                <tr>
-                    <td>Username: </td><td><input type="text" name="username"></td>
-                </tr>
-                <tr>
-                    <td>Password: </td><td><input type="text" name="password"></td>
-                </tr>
-            </table>
+        <form method="post" action="createAccountPage.jsp">
             <input type="submit" value="Create Account">
         </form>
     </body>

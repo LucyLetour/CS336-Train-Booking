@@ -35,18 +35,23 @@
         ResultSet result = ps.executeQuery();
 
         if(!result.next()) { // No result matches username (Empty result set)
-            out.print("Invalid Username, Please try again"); %>
+            //out.print("Invalid Username, Please try again");  %>
+            <p style="color: red">Invalid Password, Please try again</p>
             <jsp:include page="index.jsp"/> <%
         } else {
             int salt = result.getInt("salt");
             String passwordHash = result.getString("passwordhash");
 
             if(Encrypt.checkPassword(passwordAttempt, salt, passwordHash)) {
-                out.print("Login Successful");
+                out.print("Login Successful. Welcome " + username + "!");
+                session.setAttribute("user", username); %>
+                <jsp:include page="success.jsp"/> <%
             } else {
-                out.print("Invalid Password, Please try again");
-            } %>
-            <jsp:include page="index.jsp"/> <%
+                //out.print("Invalid Password, Please try again"); %>
+                <p style="color: red">Invalid Password, Please try again</p>
+                <jsp:include page="index.jsp"/> <%
+            }
+
             db.closeConnection(con);
 
         }
