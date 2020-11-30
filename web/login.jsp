@@ -29,31 +29,30 @@
         String passwordAttempt = request.getParameter("password");
 
         // Get salt and password hash from database using username
-        String str = "SELECT salt, passwordhash FROM login.logins WHERE username = ?";
+        //String str = "SELECT salt, passwordhash FROM login.logins WHERE username = ?";
+        String str = "SELECT pass FROM login.loginsnormal WHERE username = ?";
         PreparedStatement ps = con.prepareStatement(str);
         ps.setString(1, username);
         ResultSet result = ps.executeQuery();
 
-        if(!result.next()) { // No result matches username (Empty result set)
-            //out.print("Invalid Username, Please try again");  %>
-            <p style="color: red">Invalid Password, Please try again</p>
+        if(!result.next()) { // No result matches username (Empty result set) %>
+            <p style="color: red">Invalid Username, Please try again</p>
             <jsp:include page="index.jsp"/> <%
         } else {
-            int salt = result.getInt("salt");
-            String passwordHash = result.getString("passwordhash");
+            //int salt = result.getInt("salt");
+            //String passwordHash = result.getString("passwordhash");
+            String password = result.getString("pass");
 
-            if(Encrypt.checkPassword(passwordAttempt, salt, passwordHash)) {
+            if(/*Encrypt.checkPassword(passwordAttempt, salt, passwordHash)*/ passwordAttempt.equals(password)) {
                 out.print("Login Successful. Welcome " + username + "!");
                 session.setAttribute("user", username); %>
                 <jsp:include page="success.jsp"/> <%
-            } else {
-                //out.print("Invalid Password, Please try again"); %>
+            } else { %>
                 <p style="color: red">Invalid Password, Please try again</p>
                 <jsp:include page="index.jsp"/> <%
             }
 
             db.closeConnection(con);
-
         }
     } catch (Exception e) {
         e.printStackTrace();

@@ -22,17 +22,17 @@
                 String password = request.getParameter("password");
                 String cpassword = request.getParameter("c_password");
 
-                if(!password.equals(cpassword)) {
-                    //out.print("Passwords do not match"); %>
+                if(!password.equals(cpassword)) { %>
                     <p style="color: red">Passwords do not match</p>
                     <jsp:include page="createAccountPage.jsp"/> <%
                 } else {
                     // Create a new salt that will be tied to this account
-                    int salt = Encrypt.getNewSalt();
+                    //int salt = Encrypt.getNewSalt();
 
                     // Create a new user using the username, salt, and password (Encrypted and salted)
-                    String str = "INSERT INTO login.logins " +
-                                 "VALUES ('" + username + "', '" + salt + "', '" + Encrypt.hashNewPassword(salt, password) + "');";
+                    String str = "INSERT INTO login.loginsnormal " +
+                                 //"VALUES ('" + username + "', '" + salt + "', '" + Encrypt.hashNewPassword(salt, password) + "');";
+                                 "VALUES ('" + username + "', '" + password + "');";
 
                     Statement s = con.createStatement();
                     s.executeUpdate(str);
