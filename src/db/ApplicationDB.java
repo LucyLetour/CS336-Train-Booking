@@ -1,5 +1,6 @@
 package db;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -15,17 +16,10 @@ public class ApplicationDB {
         String connectionUrl = "jdbc:mysql://cs336-choochoo.c1kex6lbnshj.us-east-2.rds.amazonaws.com:3306";
         Connection connection = null;
 
+        //Load JDBC driver - the interface standardizing the connection procedure. Look at WEB-INF\lib for a mysql connector jar file, otherwise it fails.
         try {
-            //Load JDBC driver - the interface standardizing the connection procedure. Look at WEB-INF\lib for a mysql connector jar file, otherwise it fails.
-            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-        } catch (InstantiationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            // TODO Auto-generated catch block
+            Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
