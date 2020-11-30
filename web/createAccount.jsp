@@ -22,16 +22,23 @@
                 String password = request.getParameter("password");
                 String cpassword = request.getParameter("c_password");
 
+                //check for existing user
+                String checkStr = "SELECT * FROM login.loginsnormal WHERE username = ?;";
+                PreparedStatement ps = con.prepareStatement(checkStr);
+                ps.setString(1, username);
+                ResultSet result = ps.executeQuery();
+
                 if(!password.equals(cpassword)) { %>
                     <p style="color: red">Passwords do not match</p>
                     <jsp:include page="createAccountPage.jsp"/> <%
-                } else {
-                    // Create a new salt that will be tied to this account
-                    //int salt = Encrypt.getNewSalt();
+                }
+                else if (result.next()){ %>
+                    <p style="color: red">Account already exists</p>
+                    <jsp:include page="createAccountPage.jsp"/> <%
+                }
+                else {
 
-                    // Create a new user using the username, salt, and password (Encrypted and salted)
                     String str = "INSERT INTO login.loginsnormal " +
-                                 //"VALUES ('" + username + "', '" + salt + "', '" + Encrypt.hashNewPassword(salt, password) + "');";
                                  "VALUES ('" + username + "', '" + password + "');";
 
                     Statement s = con.createStatement();
