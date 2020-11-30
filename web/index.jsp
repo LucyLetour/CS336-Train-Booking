@@ -22,5 +22,8 @@
         <form method="post" action="createAccountPage.jsp">
             <input type="submit" value="Create Account">
         </form>
+        <form method="post" action="employeeIndex.jsp">
+            <input type="submit" value="Employee Login Portal">
+        </form>
     </body>
 </html>
