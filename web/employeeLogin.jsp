@@ -44,11 +44,25 @@
 
             if(passwordAttempt.equals(password)) {
                 auth = result.getInt("authority");
-                out.print("Login Successful. Welcome " + username + " !");
-                session.setAttribute("user", username);
-                session.setAttribute("auth",auth);
-                %>
-                <jsp:include page="employeeSuccess.jsp"/> <%
+                if (auth == 0){
+                    auth = result.getInt("authority");
+                    out.print("Login Successful. Welcome " + username + " !");
+                    session.setAttribute("user", username);
+                    session.setAttribute("auth",auth);%>
+                    <jsp:include page="customerRepSuccess.jsp"/> <%
+                }
+                else if (auth == 1){
+                    auth = result.getInt("authority");
+                    out.print("Login Successful. Welcome " + username + " !");
+                    session.setAttribute("user", username);
+                    session.setAttribute("auth",auth);%>
+                    <jsp:include page="adminSuccess.jsp"/> <%
+                }
+                else {%>
+                    <p style="color: #ff0000">Invalid Authorization, Please try again</p>
+                    <jsp:include page="employeeIndex.jsp"/> <%
+                }
+
             } else { %>
                 <p style="color: #ff0000">Invalid Password, Please try again</p>
                 <jsp:include page="employeeIndex.jsp"/> <%

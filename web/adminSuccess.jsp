@@ -1,9 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Employee Account</title>
+    <title>Admin Account</title>
 </head>
 <body>
+
 <form method="post" action="logout.jsp">
     <input type="submit" value="Logout">
 </form>
