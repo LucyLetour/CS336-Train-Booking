@@ -19,5 +19,8 @@
     </table>
     <input type="submit" value="Login">
 </form>
+<form method="post" action="index.jsp">
+    <input type="submit" value="Home">
+</form>
 </body>
 </html>
