@@ -28,9 +28,8 @@
         // Get password attempt
         String passwordAttempt = request.getParameter("password");
 
-        // Get salt and password hash from database using username
-        //String str = "SELECT salt, passwordhash FROM login.logins WHERE username = ?";
-        String str = "SELECT pass FROM login.loginsnormal WHERE username = ?";
+
+        String str = "SELECT pass FROM bookingsystem.customer_data WHERE username = ?";
         PreparedStatement ps = con.prepareStatement(str);
         ps.setString(1, username);
         ResultSet result = ps.executeQuery();
@@ -39,11 +38,9 @@
             <p style="color: red">Invalid Username, Please try again</p>
             <jsp:include page="index.jsp"/> <%
         } else {
-            //int salt = result.getInt("salt");
-            //String passwordHash = result.getString("passwordhash");
             String password = result.getString("pass");
 
-            if(/*Encrypt.checkPassword(passwordAttempt, salt, passwordHash)*/ passwordAttempt.equals(password)) {
+            if(passwordAttempt.equals(password)) {
                 out.print("Login Successful. Welcome " + username + "!");
                 session.setAttribute("user", username); %>
                 <jsp:include page="success.jsp"/> <%

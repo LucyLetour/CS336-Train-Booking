@@ -15,6 +15,11 @@
                 ApplicationDB db = new ApplicationDB();
                 Connection con = db.getConnection();
 
+                //get first,last,email from form and prepare it
+                String first_name = request.getParameter("f_name").trim().toLowerCase();
+                String last_name = request.getParameter("l_name").trim().toLowerCase();
+                String email = request.getParameter("email_add").trim().toLowerCase();
+
                 //Get the username from the form and prepare it
                 String username = request.getParameter("username");
                 username = username.trim().toLowerCase();
@@ -23,7 +28,7 @@
                 String cpassword = request.getParameter("c_password");
 
                 //check for existing user
-                String checkStr = "SELECT * FROM login.loginsnormal WHERE username = ?;";
+                String checkStr = "SELECT * FROM bookingsystem.customer_data WHERE username = ?;";
                 PreparedStatement ps = con.prepareStatement(checkStr);
                 ps.setString(1, username);
                 ResultSet result = ps.executeQuery();
@@ -38,8 +43,8 @@
                 }
                 else {
 
-                    String str = "INSERT INTO login.loginsnormal " +
-                                 "VALUES ('" + username + "', '" + password + "');";
+                    String str = "INSERT INTO bookingsystem.customer_data " +
+                                 "VALUES ('" + username + "', '" + password + "', '"+ email + "', '"+ first_name +"','"+ last_name +" ');";
 
                     Statement s = con.createStatement();
                     s.executeUpdate(str);

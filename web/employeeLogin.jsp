@@ -31,7 +31,7 @@
         //authority level of 0 for customer service rep, authority level of 1 for admin
         int auth = 0;
 
-        String str = "SELECT pass,authority FROM login.loginsemployee WHERE username = ?";
+        String str = "SELECT pass,authority FROM bookingsystem.employee_data WHERE username = ?";
         PreparedStatement ps = con.prepareStatement(str);
         ps.setString(1, username);
         ResultSet result = ps.executeQuery();
