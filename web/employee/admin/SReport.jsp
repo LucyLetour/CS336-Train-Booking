@@ -14,10 +14,9 @@
 
 <body>
 
-<form method="post" action="customerRepSuccess.jsp">
+<form method="post" action="adminSuccess.jsp.jsp">
     <input type="submit" value="Back">
 </form>
-
 
 <form method="post" action="logout.jsp">
     <input type="submit" value="Logout">
