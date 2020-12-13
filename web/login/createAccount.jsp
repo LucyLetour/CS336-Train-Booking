@@ -20,7 +20,7 @@
                 username = username.trim().toLowerCase();
 
                 String password = request.getParameter("password");
-                String cpassword = request.getParameter("c_password");
+                String cPassword = request.getParameter("c_password");
 
                 //check for existing user
                 String checkStr = "SELECT * FROM login.loginsnormal WHERE username = ?;";
@@ -28,14 +28,15 @@
                 ps.setString(1, username);
                 ResultSet result = ps.executeQuery();
 
-                if(!password.equals(cpassword)) { %>
+                if(!password.equals(cPassword)) { %>
                     <p style="color: red">Passwords do not match</p>
                     <jsp:include page="createAccountPage.jsp"/> <%
                 }
                 else if (result.next()){ %>
-                    <p style="color: red">Account already exists</p>
+                    <p style="color: red">Sorry, an account with that username already exists</p>
                     <jsp:include page="createAccountPage.jsp"/> <%
                 }
+
                 else {
 
                     String str = "INSERT INTO login.loginsnormal " +

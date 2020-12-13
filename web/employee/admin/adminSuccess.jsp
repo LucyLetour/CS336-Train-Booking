@@ -5,7 +5,7 @@
 </head>
 <body>
 
-<form method="post" action="logout.jsp">
+<form method="post" action="../logout.jsp">
     <input type="submit" value="Logout">
 </form>
 </body>

@@ -11,7 +11,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
     <head>
-        <title>Login</title>
+        <title>Employee Login</title>
     </head>
 
     <body>
@@ -28,28 +28,44 @@
         // Get password attempt
         String passwordAttempt = request.getParameter("password");
 
-        // Get salt and password hash from database using username
-        //String str = "SELECT salt, passwordhash FROM login.logins WHERE username = ?";
-        String str = "SELECT pass FROM login.loginsnormal WHERE username = ?";
+        //authority level of 0 for customer service rep, authority level of 1 for admin
+        int auth = 0;
+
+        String str = "SELECT pass,authority FROM login.loginsemployee WHERE username = ?";
         PreparedStatement ps = con.prepareStatement(str);
         ps.setString(1, username);
         ResultSet result = ps.executeQuery();
 
         if(!result.next()) { // No result matches username (Empty result set) %>
             <p style="color: red">Invalid Username, Please try again</p>
-            <jsp:include page="index.jsp"/> <%
+            <jsp:include page="employeeIndex.jsp"/> <%
         } else {
-            //int salt = result.getInt("salt");
-            //String passwordHash = result.getString("passwordhash");
             String password = result.getString("pass");
 
-            if(/*Encrypt.checkPassword(passwordAttempt, salt, passwordHash)*/ passwordAttempt.equals(password)) {
-                out.print("Login Successful. Welcome " + username + "!");
-                session.setAttribute("user", username); %>
-                <jsp:include page="success.jsp"/> <%
+            if(passwordAttempt.equals(password)) {
+                auth = result.getInt("authority");
+                if (auth == 0){
+                    auth = result.getInt("authority");
+                    out.print("Login Successful. Welcome " + username + " !");
+                    session.setAttribute("user", username);
+                    session.setAttribute("auth",auth);%>
+                    <jsp:include page="customerRep/customerRepSuccess.jsp"/> <%
+                }
+                else if (auth == 1){
+                    auth = result.getInt("authority");
+                    out.print("Login Successful. Welcome " + username + " !");
+                    session.setAttribute("user", username);
+                    session.setAttribute("auth",auth);%>
+                    <jsp:include page="admin/adminSuccess.jsp"/> <%
+                }
+                else {%>
+                    <p style="color: #ff0000">Invalid Authorization, Please try again</p>
+                    <jsp:include page="employeeIndex.jsp"/> <%
+                }
+
             } else { %>
                 <p style="color: #ff0000">Invalid Password, Please try again</p>
-                <jsp:include page="index.jsp"/> <%
+                <jsp:include page="employeeIndex.jsp"/> <%
             }
 
             db.closeConnection(con);
