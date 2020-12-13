@@ -28,12 +28,10 @@
         // Get password attempt
         String passwordAttempt = request.getParameter("password");
 
-        // Get salt and password hash from database using username
-        String str = "SELECT pass FROM login.loginsnormal WHERE username = ?";
+
+        String str = "SELECT pass FROM bookingsystem.customer_data WHERE username = ?";
         PreparedStatement ps = con.prepareStatement(str);
-
         ps.setString(1, username);
-
         ResultSet result = ps.executeQuery();
 
         if(!result.next()) { // No result matches username (Empty result set) %>

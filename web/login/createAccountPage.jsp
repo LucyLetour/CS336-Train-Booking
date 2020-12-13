@@ -10,6 +10,15 @@
         <form method="post" action="createAccount.jsp">
             <table>
                 <tr>
+                    <td>First Name: </td><td><input type="text" name="f_name"></td>
+                </tr>
+                <tr>
+                    <td>Last Name: </td><td><input type="text" name="l_name"></td>
+                </tr>
+                <tr>
+                    <td>Email: </td><td><input type="text" name="email_add"></td>
+                </tr>
+                <tr>
                     <td>Username: </td><td><input type="text" name="username"></td>
                 </tr>
                 <tr>
@@ -18,8 +27,12 @@
                 <tr>
                     <td>Confirm Password: </td><td><input type="text" name="c_password"></td>
                 </tr>
+
             </table>
             <input type="submit" value="Create account">
+        </form>
+        <form method="post" action="index.jsp">
+            <input type="submit" value="Home">
         </form>
     </body>
 </html>
