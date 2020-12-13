@@ -18,7 +18,7 @@
             <input type="submit" value="Schedule">
         </form>
 
-        <form method="post" action="../login/logout.jsp">
+        <form method="post" action="../../login/logout.jsp">
             <input type="submit" value="Logout">
         </form>
     </body>
