@@ -27,10 +27,10 @@
                     <td>Username: </td><td><input type="text" name="username"></td>
                 </tr>
                 <tr>
-                    <td>Password: </td><td><input type="text" name="password"></td>
+                    <td>Password: </td><td><input type="password" name="password"></td>
                 </tr>
                 <tr>
-                    <td>Confirm Password: </td><td><input type="text" name="c_password"></td>
+                    <td>Confirm Password: </td><td><input type="password" name="c_password"></td>
                 </tr>
 
             </table>

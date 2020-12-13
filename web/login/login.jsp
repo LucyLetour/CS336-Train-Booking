@@ -42,7 +42,7 @@
                 if(passwordAttempt.equals(password)) {
                     session.setAttribute("throughline", "Login Successful. Welcome " + username + "!");
                     session.setAttribute("user", username);
-                    response.sendRedirect("userPage.jsp");
+                    response.sendRedirect("../customer/userPage.jsp");
                 } else {
                     session.setAttribute("throughline", "Invalid password");
                     response.sendRedirect("../index.jsp");
