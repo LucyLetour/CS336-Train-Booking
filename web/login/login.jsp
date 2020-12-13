@@ -15,44 +15,43 @@
     </head>
 
     <body>
-    <%
-    try {
-        // Get the database connection
-        ApplicationDB db = new ApplicationDB();
-        Connection con = db.getConnection();
+        <% try {
+            // Get the database connection
+            ApplicationDB db = new ApplicationDB();
+            Connection con = db.getConnection();
 
-        // Get and prepare username
-        String username = request.getParameter("username");
-        username = username.trim().toLowerCase();
+            // Get and prepare username
+            String username = request.getParameter("username");
+            username = username.trim().toLowerCase();
 
-        // Get password attempt
-        String passwordAttempt = request.getParameter("password");
+            // Get password attempt
+            String passwordAttempt = request.getParameter("password");
 
 
-        String str = "SELECT pass FROM bookingsystem.customer_data WHERE username = ?";
-        PreparedStatement ps = con.prepareStatement(str);
-        ps.setString(1, username);
-        ResultSet result = ps.executeQuery();
+            String str = "SELECT pass FROM bookingsystem.customer_data WHERE username = ?";
+            PreparedStatement ps = con.prepareStatement(str);
+            ps.setString(1, username);
+            ResultSet result = ps.executeQuery();
 
-        if(!result.next()) { // No result matches username (Empty result set) %>
-            <p style="color: red">Invalid Username, Please try again</p>
-            <jsp:include page="index.jsp"/> <%
-        } else {
-            String password = result.getString("pass");
+            if(!result.next()) { // No result matches username (Empty result set)
+                session.setAttribute("throughline", "Invalid username");
+                response.sendRedirect("../index.jsp");
+            } else {
+                String password = result.getString("pass");
 
-            if(passwordAttempt.equals(password)) {
-                out.print("Login Successful. Welcome " + username + "!");
-                session.setAttribute("user", username);
-                response.sendRedirect("userPage.jsp");
-            } else { %>
-                <p style="color: #ff0000">Invalid Password, Please try again</p>
-                <jsp:include page="index.jsp"/> <%
+                if(passwordAttempt.equals(password)) {
+                    session.setAttribute("throughline", "Login Successful. Welcome " + username + "!");
+                    session.setAttribute("user", username);
+                    response.sendRedirect("userPage.jsp");
+                } else {
+                    session.setAttribute("throughline", "Invalid password");
+                    response.sendRedirect("../index.jsp");
+                }
+
+                db.closeConnection(con);
             }
-
-            db.closeConnection(con);
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
-    } %>
+        } catch (Exception e) {
+            e.printStackTrace();
+        } %>
     </body>
 </html>

@@ -7,6 +7,11 @@
 
     <body>
         <br>
+        <%
+            if(session.getAttribute("throughline") != null) {
+                out.print(session.getAttribute("throughline"));
+            }
+        %>
         <form method="post" action="createAccount.jsp">
             <table>
                 <tr>

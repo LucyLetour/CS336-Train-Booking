@@ -7,7 +7,7 @@
 <form method="post" action="customerRepSuccess.jsp">
     <input type="submit" value="Back">
 </form>
-<form method="post" action="../logout.jsp">
+<form method="post" action="../../login/logout.jsp">
     <input type="submit" value="Logout">
 </form>
 </body>

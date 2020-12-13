@@ -6,9 +6,16 @@
     </head>
 
     <body>
-    <h1>Welcome to</h1><h1 style="font-family: 'Comic Sans MS',serif; font-size: 4em">T R A I N</h1>
-    <br>
-        <form method="post" action="login.jsp">
+        <h1>Welcome to</h1><h1 style="font-family: 'Comic Sans MS',serif; font-size: 4em">T R A I N</h1>
+        <br>
+
+        <%
+            if(session.getAttribute("throughline") != null) {
+                out.print(session.getAttribute("throughline"));
+            }
+        %>
+
+        <form method="post" action="login/login.jsp">
             <table>
                 <tr>
                     <td>Username: </td><td><input type="text" name="username"></td>
@@ -19,10 +26,10 @@
             </table>
             <input type="submit" value="Login">
         </form>
-        <form method="post" action="createAccountPage.jsp">
+        <form method="post" action="login/createAccountPage.jsp">
             <input type="submit" value="Create Account">
         </form>
-        <form method="post" action="employeeIndex.jsp">
+        <form method="post" action="employee/employeeIndex.jsp">
             <input type="submit" value="Employee Login Portal">
         </form>
     </body>
