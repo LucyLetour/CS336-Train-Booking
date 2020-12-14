@@ -32,7 +32,7 @@
             ResultSet result = ps.executeQuery();
 
 
-            %><table>
+            %><table align="center" border="2">
                 <thead>
                     <tr>
                         <th> Question </th>
@@ -43,12 +43,18 @@
             <%
 
             while (result.next()){
+                String question = result.getString("question");
+                String cust_user = result.getString("customer_username");
+                int qid = result.getInt("qid");
                 %>
                 <tr>
-                    <td><%=result.getString("question") %></td>
-                    <td><%=result.getString("customer_username") %></td>
+                    <td><%=question%></td>
+                    <td><%=cust_user%></td>
                     <td>
-                        <form method="post">
+                        <form method="post" action="empAnswerQuestion.jsp">
+                            <input type="hidden" name="question" value="<%=question%>">
+                            <input type="hidden" name="cust_user" value="<%=cust_user%>">
+                            <input type="hidden" name="qid" value="<%=qid%>">
                             <input type="submit" value="Answer">
                         </form>
                     </td>
