@@ -7,7 +7,7 @@
 <head>
     <link rel="stylesheet" href="../../resources/navbar.css">
     <link rel="stylesheet" href="../../resources/base.css">
-    <title>Answer a Question</title>
+    <title>Answer Question</title>
 </head>
     <body>
 

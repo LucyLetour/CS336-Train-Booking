@@ -18,7 +18,7 @@
         <li class="navbar-entry right-padding"><a id="logout" href="../../login/logout.jsp">Logout</a></li>
     </ul>
 
-    <h1 style="font-family: 'Comic Sans MS',serif; font-size: 4em">Questions and Answers</h1>
+    <h1 style="font-family: 'Comic Sans MS',serif; font-size: 4em">Unanswered Questions</h1>
 
     <%
         try {
