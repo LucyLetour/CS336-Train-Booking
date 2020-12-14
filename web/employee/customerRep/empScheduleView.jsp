@@ -13,17 +13,63 @@
 
     <ul id="navbar" class="nav">
         <li class="navbar-entry"><a id="home-text" class="active" href="customerRepSuccess.jsp">Customer Rep Home</a></li>
+        <li class="navbar-entry"><a href="empScheduleView.jsp">Schedules</a></li>
         <li class="navbar-entry"><a href="empReservationView.jsp">Reservations</a></li>
         <li class="navbar-entry"><a href="empQuestionView.jsp">Q & A</a></li>
         <li class="navbar-entry right-padding"><a id="logout" href="../../login/logout.jsp">Logout</a></li>
     </ul>
 
-    <form method="post" action="customerRepSuccess.jsp">
-        <input type="submit" value="Back">
-    </form>
+    <%
+        try {
+            ApplicationDB db = new ApplicationDB();
+            Connection con = db.getConnection();
 
-    <form method="post" action="../../login/logout.jsp">
-        <input type="submit" value="Logout">
-    </form>
+            //CURRENTLY USING A TEST TABLE, SWITCH TO BOOKINGSYSTEM.TRAIN_SCHEDULE BEFORE SUBMITTING
+            String str = "SELECT * FROM richTesting.train_schedule";
+            PreparedStatement ps = con.prepareStatement(str);
+            ResultSet res = ps.executeQuery();
+
+            %>
+            <p> All Scheduled Trips</p>
+            <table border="2" align="center">
+                <thead>
+                    <tr>
+                        <th>Train Line</th>
+                        <th> Travel Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+            <%
+
+            while (res.next()){
+                %>
+                <tr>
+                    <td><%=res.getString("train_line")%></td>
+                    <td><%=res.getString("travel_time")%></td>
+                    <td>
+                        <form method="post">
+                            <input type="submit" value="Edit">
+                            <input type="submit" value="Delete">
+                        </form>
+                    </td>
+                </tr>
+                <%
+            }
+            %>    </tbody>
+            </table>
+            <%
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    %>
+
+
+
+
+
+
+
+
 </body>
 </html>
