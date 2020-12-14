@@ -18,7 +18,7 @@
             String passwordAttempt = request.getParameter("password");
             //authority level of 0 for customer service rep, authority level of 1 for admin
             int auth;
-            String str = "SELECT pass,authority FROM bookingsystem.employee_data WHERE username = ?";
+            String str = "SELECT pass,authority,ssn FROM bookingsystem.employee_data WHERE username = ?";
             PreparedStatement ps = con.prepareStatement(str);
             ps.setString(1, username);
             ResultSet result = ps.executeQuery();
@@ -29,11 +29,13 @@
                 String password = result.getString("pass");
                 if(passwordAttempt.equals(password)) {
                     auth = result.getInt("authority");
+                    int emp_ssn = result.getInt("ssn");
                     if (auth == 0) {
                         session.setAttribute("throughline", "Login Successful. Welcome " + username + " !");
                         auth = result.getInt("authority");
                         session.setAttribute("user", username);
                         session.setAttribute("auth",auth);
+                        session.setAttribute("emp_ssn",emp_ssn);
                         response.sendRedirect("customerRep/customerRepSuccess.jsp");
                     } else if (auth == 1){
                         session.setAttribute("throughline", "Login Successful. Welcome " + username + " !");

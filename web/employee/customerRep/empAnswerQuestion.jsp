@@ -7,9 +7,9 @@
 <head>
     <link rel="stylesheet" href="../../resources/navbar.css">
     <link rel="stylesheet" href="../../resources/base.css">
-    <title>Reservations</title>
+    <title>Answer Question</title>
 </head>
-<body>
+    <body>
 
     <ul id="navbar" class="nav">
         <li class="navbar-entry"><a id="home-text" class="active" href="customerRepSuccess.jsp">Customer Rep Home</a></li>
@@ -19,28 +19,19 @@
         <li class="navbar-entry right-padding"><a id="logout" href="../../login/logout.jsp">Logout</a></li>
     </ul>
 
-    <%
-        /*
-        try {
+    <h2><%=request.getParameter("question")%></h2>
 
-            // TO BE CONTINUED
-            ApplicationDB db = new ApplicationDB();
-            Connection con = db.getConnection();
+    <form method="post" action="processAnswer.jsp">
+        <input type="hidden" name="question" value="<%=request.getParameter("question")%>">
+        <input type="hidden" name="cust_user" value="<%=request.getParameter("cust_user")%>">
+        <input type="hidden" name="qid" value="<%=request.getParameter("qid")%>">
+        <input type="text" name="answer_text">
+        <input type="submit" value="Answer">
+    </form>
 
-            String str = "SELECT * FROM bookingsystem.reservation_data";
-            PreparedStatement ps = con.prepareStatement(str);
-
-            ResultSet result = ps.executeQuery();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
-         */
-    %>
-
-
-
+    <form method="post" action="empQuestionView.jsp">
+        <input type="submit" value="Cancel">
+    </form>
 
 
 </body>
