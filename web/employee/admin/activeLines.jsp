@@ -14,7 +14,7 @@
 
 <body>
 
-<form method="post" action="adminSuccess.jsp.jsp">
+<form method="post" action="adminSuccess.jsp">
     <input type="submit" value="Back">
 </form>
 
