@@ -18,8 +18,6 @@
         <li class="navbar-entry right-padding"><a id="logout" href="../../login/logout.jsp">Logout</a></li>
     </ul>
 
-    <h1 style="font-family: 'Comic Sans MS',serif; font-size: 4em">Unanswered Questions</h1>
-
     <%
         try {
             // Get the database connection
@@ -32,7 +30,10 @@
             ResultSet result = ps.executeQuery();
 
 
-            %><table align="center" border="2">
+            %>
+            <p>Unanswered Questions</p>
+            <br>
+            <table align="center" border="2">
                 <thead>
                     <tr>
                         <th> Question </th>
@@ -65,7 +66,63 @@
             %>
                 </tbody>
             </table>
+            <br>
+            <p>Answered Questions</p>
+            <br>
+            <table align="center" border="2">
+                <thead>
+                    <tr>
+                        <th> Question </th>
+                        <th> Answer </th>
+                        <th> Customer </th>
+                        <th> Representative </th>
+                    </tr>
+                </thead>
+                <tbody>
+                <%
+            String str_ans = "Select * FROM bookingsystem.qa";
+            PreparedStatement ps_answered = con.prepareStatement(str_ans);
+            ResultSet res_answered = ps_answered.executeQuery();
+
+            while (res_answered.next()) {
+                String question = res_answered.getString("question");
+                String answer = res_answered.getString("answer");
+                String cust_user = res_answered.getString("customer_username");
+                int ssn = res_answered.getInt("ssn");
+
+                String str_emp = "SELECT username FROM bookingsystem.employee_data WHERE ssn = ?";
+                PreparedStatement ps_emp = con.prepareStatement(str_emp);
+                ps_emp.setString(1, Integer.toString(ssn));
+                ResultSet res_emp = ps_emp.executeQuery();
+
+                String employee_name = "default";
+
+                if (res_emp.next()){
+                    employee_name = res_emp.getString("username");
+                }
+
+
+                %>
+                <tr>
+                    <td><%=question%></td>
+                    <td><%=answer%></td>
+                    <td><%=cust_user%></td>
+                    <td><%=employee_name%></td>
+                </tr>
+                <%
+
+
+            }
+
+
+            %>
+                </tbody>
+            </table>
             <%
+
+
+
+
 
             db.closeConnection(con);
         }
