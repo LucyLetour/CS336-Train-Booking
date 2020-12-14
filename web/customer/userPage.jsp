@@ -1,8 +1,6 @@
-<%@ page import="db.ApplicationDB" %>
-<%@ page import="java.sql.Connection" %>
-<%@ page import="java.sql.PreparedStatement" %>
-<%@ page import="java.sql.ResultSet" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.sql.ResultSet, java.sql.PreparedStatement, java.sql.Connection, db.ApplicationDB" %>
+<%@ page contentType="text/html;charset=UTF-8"%>
+
 <html>
     <head>
         <link rel="stylesheet" href="../resources/navbar.css">
