@@ -24,8 +24,8 @@
             ApplicationDB db = new ApplicationDB();
             Connection con = db.getConnection();
 
-            //CURRENTLY USING A TEST TABLE, SWITCH TO BOOKINGSYSTEM.TRAIN_SCHEDULE BEFORE SUBMITTING
-            String str = "SELECT * FROM richTesting.train_schedule";
+
+            String str = "SELECT * FROM bookingsystem.train_schedule";
             PreparedStatement ps = con.prepareStatement(str);
             ResultSet res = ps.executeQuery();
 
@@ -34,18 +34,48 @@
             <table border="2" align="center">
                 <thead>
                     <tr>
-                        <th>Train Line</th>
-                        <th> Travel Time</th>
+                        <th>Train Line </th>
+                        <th> Origin </th>
+                        <th> Destination </th>
+                        <th> Travel Time </th>
                     </tr>
                 </thead>
                 <tbody>
             <%
 
             while (res.next()){
+                String line = res.getString("train_line");
+                String travel_time = res.getString("travel_time");
+                String tid = res.getString("tid");
+
+                String str_orig = "SELECT s.stationName FROM bookingsystem.station_data s, bookingsystem.train_schedule t, bookingsystem.stops_at st WHERE t.tid = st.tid AND s.sid = st.sid AND st.is_origin=1 AND st.tid=?";
+                PreparedStatement ps_orig = con.prepareStatement(str_orig);
+                ps_orig.setString(1,tid);
+                ResultSet res_orig = ps_orig.executeQuery();
+
+                String dest = "default";
+                String origin = "default";
+
+                if (res_orig.next()){
+                    //get name of origin station
+                    origin = res_orig.getString("stationName");
+                }
+
+                String str_dest = "SELECT s.stationName FROM bookingsystem.station_data s, bookingsystem.train_schedule t, bookingsystem.stops_at st WHERE t.tid = st.tid AND s.sid = st.sid AND st.is_dest=1 AND st.tid=?";
+                PreparedStatement ps_dest = con.prepareStatement(str_dest);
+                ps_dest.setString(1,tid);
+                ResultSet res_dest = ps_dest.executeQuery();
+
+                if (res_dest.next()){
+                    dest = res_dest.getString("stationName");
+                }
+
                 %>
                 <tr>
-                    <td><%=res.getString("train_line")%></td>
-                    <td><%=res.getString("travel_time")%></td>
+                    <td><%=line%></td>
+                    <td><%=origin%></td>
+                    <td><%=dest%></td>
+                    <td><%=travel_time%></td>
                     <td>
                         <form method="post">
                             <input type="submit" value="Edit">

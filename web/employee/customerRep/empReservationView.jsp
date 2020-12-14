@@ -19,12 +19,29 @@
         <li class="navbar-entry right-padding"><a id="logout" href="../../login/logout.jsp">Logout</a></li>
     </ul>
 
+    <%
+        /*
+        try {
 
-    <form method="post" action="customerRepSuccess.jsp">
-        <input type="submit" value="Back">
-    </form>
-    <form method="post" action="../../login/logout.jsp">
-        <input type="submit" value="Logout">
-    </form>
+            // TO BE CONTINUED
+            ApplicationDB db = new ApplicationDB();
+            Connection con = db.getConnection();
+
+            String str = "SELECT * FROM bookingsystem.reservation_data";
+            PreparedStatement ps = con.prepareStatement(str);
+
+            ResultSet result = ps.executeQuery();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+         */
+    %>
+
+
+
+
+
 </body>
 </html>
