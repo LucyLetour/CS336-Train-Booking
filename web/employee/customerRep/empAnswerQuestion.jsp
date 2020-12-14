@@ -28,6 +28,10 @@
         <input type="submit" value="Answer">
     </form>
 
+    <form method="post" action="empQuestionView.jsp">
+        <input type="submit" value="Cancel">
+    </form>
+
 
 </body>
 </html>
