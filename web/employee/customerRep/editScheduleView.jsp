@@ -138,6 +138,14 @@ try {
         <input type="text" id="fare"  name="fare" value="<%=fare%>">
         <br>
         <input type="hidden" name="intermediate" value="<%=intermediate%>">
+        <input type="hidden" name="tid" value="<%=tid%>">
+        <%
+            for(int i=0; i < intermediate; i++){
+             %><input type="hidden" name="old<%=i%>" value="<%=intermeds[i]%>"> <%
+            }
+
+        %>
+
         <input type="submit" value="Update">
     </form>
 
