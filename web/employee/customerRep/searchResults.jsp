@@ -98,6 +98,9 @@
     </tbody>
 </table>
 
+<form method="post" action="empScheduleView.jsp">
+    <input type="submit" value="Return">
+</form>
 
 
 

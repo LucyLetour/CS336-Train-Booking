@@ -108,8 +108,27 @@
             <br>
             <p> Search For Schedules</p>
             <form method="post" action="searchResults.jsp">
-                <input type="text" id="origin" name="origin">
-                <input type="text" id="dest" name="dest">
+                <label for="origin">Origin Station: </label>
+                <select id="origin" name="origin">
+                    <%
+                        String get_st = "SELECT stationName FROM bookingsystem.station_data";
+                        PreparedStatement ps_st = con.prepareStatement(get_st);
+                        ResultSet stationResults = ps_st.executeQuery();
+                        while(stationResults.next()){
+                            %><option value="<%=stationResults.getString("stationName")%>"><%=stationResults.getString("stationName")%></option> <%
+                        }
+                    %>
+                </select>
+                <br>
+                <label for="dest">Destination Station: </label>
+                <select id="dest" name="dest">
+                    <%
+                        stationResults = ps_st.executeQuery();
+                        while(stationResults.next()){
+                    %><option value="<%=stationResults.getString("stationName")%>"><%=stationResults.getString("stationName")%></option> <%
+                    }
+                %>
+                </select>
                 <input type="submit" value="Search">
             </form>
             <%
