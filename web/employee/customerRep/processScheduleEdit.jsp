@@ -14,23 +14,29 @@
     // we need to modify stops_at, then train_schedule to preserve foreign key constraints
     // for now this just displays the data for debugging
     try {
-        int intermediate = Integer.parseInt(request.getParameter("intermediate"));
-        %>
-        <p>Origin: <%=request.getParameter("origin")%></p>
-        <%
-        for (int i=0; i< intermediate; i++){
-            %>
-            <p>Intermediate Stop: <%=request.getParameter("mid"+Integer.toString(i))%></p>
-            <%
+        int intermediate_num = Integer.parseInt(request.getParameter("intermediate"));
+        String[] intermeds = new String[100];
+        for (int i = 0; i < intermediate_num;i++){
+            intermeds[i] = request.getParameter("mid"+Integer.toString(i));
         }
-        %>
-        <p>Destination: <%=request.getParameter("dest")%></p>
-        <p>Line: <%=request.getParameter("line")%></p>
-        <p>Departure: <%=request.getParameter("depart")%> </p>
-        <p>Arrival: <%=request.getParameter("arrive")%></p>
-        <p>Fare: <%=request.getParameter("fare")%></p>
-        <p>intermediate stops: <%=intermediate%></p>
-        <%
+        String origin = request.getParameter("origin");
+        String dest = request.getParameter("dest");
+        String line = request.getParameter("line");
+        String arrival = request.getParameter("arrive");
+        String departure = request.getParameter("depart");
+        String fare = request.getParameter("fare");
+
+        //modify stops_at first
+
+
+
+
+        //modify train_schedule
+
+
+
+        response.sendRedirect("empScheduleView.jsp");
+
     }
     catch (Exception e){
         e.printStackTrace();
@@ -38,7 +44,7 @@
 
 
 
-    //response.sendRedirect("empScheduleView.jsp");
+
 %>
 
 </body>

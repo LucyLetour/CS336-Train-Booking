@@ -38,7 +38,8 @@ try {
     ApplicationDB db = new ApplicationDB();
     Connection con = db.getConnection();
 
-    String str = "SELECT * FROM bookingsystem.stops_at WHERE tid = ?";
+    //gets intermediate stops in time order
+    String str = "SELECT * FROM bookingsystem.stops_at WHERE tid = ? ORDER BY arrival_time ASC";
     PreparedStatement ps = con.prepareStatement(str);
     ps.setString(1,tid);
     ResultSet res = ps.executeQuery();
