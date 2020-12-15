@@ -42,7 +42,7 @@
     /*
     try {
 
-        // sales report by month
+        // sales report by month or customer name
         ApplicationDB db = new ApplicationDB();
         Connection con = db.getConnection();
 
