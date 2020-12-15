@@ -68,6 +68,8 @@
                 </select>
                 <input type="submit" value="Search">
             </form>
+        <br>
+        <br>
 
         <!-- Generate table with all valid train schedules -->
 
@@ -150,7 +152,7 @@
                     <td><%=result.getString("arrival_time")%></td>
                     <td>$<%=result.getString("fare")%></td>
                     <td>
-                        <form action="makeReservation.jsp" method="post">
+                        <form action="makeReservationPage.jsp" method="post">
                             <input type="hidden" name="tid" value="<%=result.getInt("tid")%>">
                             <input type="hidden" name="departure_time" value="<%=result.getString("departure_time")%>">
                             <input type="hidden" name="arrival_time" value="<%=result.getString("arrival_time")%>">

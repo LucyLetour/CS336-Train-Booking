@@ -1,3 +1,5 @@
+<%@ page import="db.ApplicationDB" %>
+<%@ page import="java.sql.Connection" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
     <head>
@@ -12,5 +14,16 @@
             <li class="navbar-entry"><a href="questions.jsp">Questions</a></li>
             <li class="navbar-entry right-padding"><a id="logout" href="../login/logout.jsp">Logout</a></li>
         </ul>
+
+        <% try {
+            // Get the database connection
+            ApplicationDB db = new ApplicationDB();
+            Connection con = db.getConnection();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        %>
     </body>
 </html>

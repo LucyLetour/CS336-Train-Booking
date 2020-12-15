@@ -66,9 +66,26 @@
         <h2> Your trip: </h2>
         <h3> <%=allStations%> </h3>
 
-        <form action="reservations.jsp" method="post" onsubmit="setSubmittingForm()" oninput="vFare.value=(!roundtrip.checked || roundtrip.indeterminate ? 1 : 2)*<%=onewayFare%>">
-            <label for="roundtrip">Roundtrip: </label><input type="checkbox" id="roundtrip" value="unchecked">
-            <output name="vFare" for="roundtrip fare"><%=onewayFare%></output>
+        <form action="createReservation.jsp" method="post" onsubmit="setSubmittingForm()" oninput="vFare.value=`$` + (!roundtrip.checked || roundtrip.indeterminate ? 1 : 2)*<%=onewayFare%>">
+            <table>
+                <tr>
+                    <td><label for="roundtrip">Roundtrip: </label><input type="checkbox" id="roundtrip" value="unchecked"></td>
+                    <td><output name="vFare" for="roundtrip fare">$<%=onewayFare%></output></td>
+                </tr>
+                <tr>
+                    <td><label> Please select all that apply: </label></td>
+                </tr>
+                <tr>
+                   <td><label for="disabled"> - Disabled: </label><input type="checkbox" id="disabled" value="unchecked"></td>
+                </tr>
+                <tr>
+                    <td><label for="senior"> - Senior (age 60+): </label><input type="checkbox" id="senior" value="unchecked"></td>
+                </tr>
+                <tr>
+                    <td><label for="minor"> - Minor (under 18): </label><input type="checkbox" id="minor" value="unchecked"></td>
+                </tr>
+            </table>
+            <input type="hidden" name="paidFare" value="vFare">
             <input type="submit" value="Make Reservation">
         </form>
         <form action="userPage.jsp" method="get">
