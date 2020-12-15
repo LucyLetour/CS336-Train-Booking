@@ -1,17 +1,8 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: nicole
-  Date: 12/4/20
-  Time: 1:00 PM
-  To change this template use File | Settings | File Templates.
---%>
-
 <%@ page import="db.ApplicationDB" %>
 <%@ page import="java.sql.Connection" %>
 <%@ page import="java.sql.PreparedStatement" %>
 <%@ page import="java.sql.ResultSet" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
 <html>
 <head>
     <link rel="stylesheet" href="../../resources/navbar.css">
@@ -31,49 +22,30 @@
     <li class="navbar-entry right-padding"><a id="logout" href="../../login/logout.jsp">Logout</a></li>
 </ul>
 <html>
-
 <head>
-    <title>Best Customer</title>
+    <title>Customer Rep Account</title>
 </head>
-
 <body>
 
-<strong> Best Customer</strong>
-<p> This is the best customer: </p>
+<strong> Control Customer Rep Accounts </strong>
+
+<p> Here you can: add, delete, and edit Customer Representative Accounts</p>
 
 <%
-
+    /*
     try {
 
-        // returns customer with most reservations
+        // can be by transit line OR customer name
         ApplicationDB db = new ApplicationDB();
         Connection con = db.getConnection();
-
-        String str = "SELECT * FROM bookingsystem.passenger";
-        PreparedStatement ps = con.prepareStatement(str);
-        ResultSet res = ps.executeQuery();
-%>
-
-
-<%
-//need to return customer with most revenue created
-
-
-
-
-%>
-
-
-<%
 
     }
     catch (Exception e) {
         e.printStackTrace();
     }
 
-
+     */
 %>
 
 </body>
-
 </html>

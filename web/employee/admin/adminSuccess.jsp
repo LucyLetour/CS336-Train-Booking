@@ -19,6 +19,7 @@
     <li class="navbar-entry"><a href="listOfReservations.jsp">Reservations</a></li>
     <li class="navbar-entry"><a href="revenue.jsp">Revenue</a></li>
     <li class="navbar-entry"><a href="SReport.jsp">Sales Report</a></li>
+    <li class="navbar-entry"><a href="customerRepEdit.jsp">Customer Rep Editing</a></li>
     <li class="navbar-entry right-padding"><a id="logout" href="../../login/logout.jsp">Logout</a></li>
 </ul>
 <html>
@@ -31,6 +32,7 @@
 
 <p> Welcome Admin Employee to the Admin Home Page.</p>
 <p> Here you can: Find active lines, find the best customer, get a list of reservations, get the revenue, and get a sales report.</p>
+
 
 </body>
 </html>

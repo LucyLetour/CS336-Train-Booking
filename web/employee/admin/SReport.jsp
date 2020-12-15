@@ -25,6 +25,7 @@
     <li class="navbar-entry"><a href="listOfReservations.jsp">Reservations</a></li>
     <li class="navbar-entry"><a href="revenue.jsp">Revenue</a></li>
     <li class="navbar-entry"><a href="SReport.jsp">Sales Report</a></li>
+    <li class="navbar-entry"><a href="customerRepEdit.jsp">Customer Rep Editing</a></li>
     <li class="navbar-entry right-padding"><a id="logout" href="../../login/logout.jsp">Logout</a></li>
 </ul>
 <html>
@@ -42,7 +43,7 @@
     /*
     try {
 
-        // sales report by month or customer name
+        // sales report by month
         ApplicationDB db = new ApplicationDB();
         Connection con = db.getConnection();
 

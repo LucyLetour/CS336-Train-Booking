@@ -26,6 +26,7 @@
     <li class="navbar-entry"><a href="listOfReservations.jsp">Reservations</a></li>
     <li class="navbar-entry"><a href="revenue.jsp">Revenue</a></li>
     <li class="navbar-entry"><a href="SReport.jsp">Sales Report</a></li>
+    <li class="navbar-entry"><a href="customerRepEdit.jsp">Customer Rep Editing</a></li>
     <li class="navbar-entry right-padding"><a id="logout" href="../../login/logout.jsp">Logout</a></li>
 </ul>
 <html>
