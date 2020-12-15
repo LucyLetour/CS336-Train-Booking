@@ -69,9 +69,7 @@
             // Get info from GET
             String origin = request.getParameter("origin");
             String dest = request.getParameter("dest");
-            String dtime = request.getParameter("dtime").replace("T", " ").replace("%3A", ":");
-
-            //String departureStation = "SELECT sd.stationName FROM stops_at s, station_data sd WHERE s.tid = ts.tid and s.sid = sd.sid";
+            String dtime = request.getParameter("dtime").replace("T", " ").replace("%3A", ":"); //YYYY-MM-DDThh%3Amm -> YYYY-MM-DD hh:mm
 
             String allTrains =
                     "SELECT ts.tid, ts.train_line, ts.fare, sa.arrival_time, sa.departure_time, sd.stationName, sd.sid " +
@@ -105,9 +103,6 @@
                     "FROM stops_at sa " +
                     "WHERE sa.tid = ? and sa.arrival_time >= STR_TO_DATE(?, '%Y-%m-%d %H:%i') and sa.departure_time <= STR_TO_DATE(?, '%Y-%m-%d %H:%i');";
 
-            ps = con.prepareStatement(allTrains);
-            ps = con.prepareStatement(deptSchedule);
-            ps = con.prepareStatement(arrSchedule);
             ps = con.prepareStatement(routes);
             out.print(dtime);
             ps.setString(1, origin);
@@ -148,7 +143,14 @@
                     <td><%=result.getString("asn")%></td>
                     <td><%=result.getString("arrival_time")%></td>
                     <td>$<%=fare%></td>
-                    <td><form action="makeReservation.jsp" method="post"><data value="<%=result%>"></data><input type="submit" name="Make Reservation" value="Pee"></form></td>
+                    <td>
+                        <form action="makeReservation.jsp" method="post">
+                            <input type="hidden" name="tid" value="<%=result.getInt("tid")%>">
+                            <input type="hidden" name="origin" value="<%=origin%>">
+                            <input type="hidden" name="destination" value="<%=dest%>">
+                            <input type="hidden" name="fare" value="<%=fare%>">
+                            <input type="submit" value="Make Reservation">
+                        </form></td>
                 </tr>
                 <%
             }
