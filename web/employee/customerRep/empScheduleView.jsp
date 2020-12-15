@@ -102,6 +102,19 @@
             %>    </tbody>
             </table>
             <%
+
+            %>
+            <br>
+            <br>
+            <p> Search For Schedules</p>
+            <form method="post" action="searchResults.jsp">
+                <input type="text" id="origin" name="origin">
+                <input type="text" id="dest" name="dest">
+                <input type="submit" value="Search">
+            </form>
+            <%
+
+
         }
         catch (Exception e){
             e.printStackTrace();
