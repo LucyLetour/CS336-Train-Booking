@@ -41,15 +41,74 @@ try {
     ps.setString(1,tid);
     ResultSet res = ps.executeQuery();
 
+    int intermediate = 0;
     while (res.next()){
         if (res.getInt("is_origin") == 1){
             depart = res.getString("departure_time");
         }
-        if (res.getInt("is_dest") == 1){
+        else if (res.getInt("is_dest") == 1){
             arrival = res.getString("arrival_time");
+        }
+        else {
+            //intermediate stops
+            intermediate += 1;
         }
 
     }
+
+    %>
+    <form method="post" action="processScheduleEdit.jsp">
+        <br>
+        <label for="origin">Origin Station:</label>
+        <select name="origin" id="origin">
+            <option value="%"></option>
+            <%
+                String get_st = "SELECT stationName FROM bookingsystem.station_data";
+                PreparedStatement ps_st = con.prepareStatement(get_st);
+                ResultSet stationResults = ps_st.executeQuery();
+
+                String lastSelected;
+                while(stationResults.next()) {
+                    lastSelected = stationResults.getString("stationName").equals(origin) ? "selected" : ""; %>
+            <option <%=lastSelected%> value="<%=stationResults.getString("stationName")%>"><%=stationResults.getString("stationName")%></option>
+            <% }
+            %>
+        </select>
+        <br>
+        <label for="dest">Destination Station:</label>
+        <select name="dest" id="dest">
+            <option value="%"></option>
+            <%
+                stationResults = ps_st.executeQuery();
+
+                while(stationResults.next()) {
+                    lastSelected = stationResults.getString("stationName").equals(dest) ? "selected" : ""; %>
+            <option <%=lastSelected%> value="<%=stationResults.getString("stationName")%>"><%=stationResults.getString("stationName")%></option>
+            <% }
+            %>
+        </select>
+        <br>
+        <label for="line">Train Line</label>
+        <input type="text" id="line" name="line" value="<%=line%>">
+        <br>
+        <label for="arrive">Arrival Time</label>
+        <input type="datetime-local" id="arrive" name="arrive" value="<%=arrival%>">
+        <br>
+        <label for="depart">Departure Time</label>
+        <input type="datetime-local" id="depart" name="depart" value="<%=depart%>">
+        <br>
+        <label for="fare">Fare</label>
+        <input type="text" id="fare"  name="fare" value="<%=fare%>">
+        <br>
+        <input type="submit" value="Update">
+    </form>
+
+    <form method="post" action="empScheduleView.jsp">
+        <input type="submit" value="Cancel">
+    </form>
+    <%
+
+
     db.closeConnection(con);
 }
 catch (Exception e){
@@ -57,35 +116,7 @@ catch (Exception e){
 }
 
 
-
 %>
-<form method="post" action="processScheduleEdit.jsp">
-    <br>
-    <label for="origin">Origin Station</label>
-    <input type="text" id="origin" name="origin" value="<%=origin%>">
-    <br>
-    <label for="dest">Destination Station</label>
-    <input type="text" id="dest" name="dest" value="<%=dest%>">
-    <br>
-    <label for="line">Train Line</label>
-    <input type="text" id="line" name="line" value="<%=line%>">
-    <br>
-    <label for="arrive">Arrival Time</label>
-    <input type="text" id="arrive" name="arrive" value="<%=arrival%>">
-    <br>
-    <label for="depart">Departure Time</label>
-    <input type="text" id="depart" name="depart" value="<%=depart%>">
-    <br>
-    <label for="fare">Fare</label>
-    <input type="text" id="fare"  name="fare" value="<%=fare%>">
-    <br>
-    <input type="submit" value="Update">
-</form>
-
-<form method="post" action="empScheduleView.jsp">
-    <input type="submit" value="Cancel">
-</form>
-
 
 </body>
 </html>
