@@ -44,7 +44,7 @@
     /*
     try {
 
-        // TO BE CONTINUED
+        // returns customer with most reservations
         ApplicationDB db = new ApplicationDB();
         Connection con = db.getConnection();
 

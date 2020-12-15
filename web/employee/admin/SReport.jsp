@@ -42,7 +42,7 @@
     /*
     try {
 
-        // TO BE CONTINUED
+        // sales report by month
         ApplicationDB db = new ApplicationDB();
         Connection con = db.getConnection();
 

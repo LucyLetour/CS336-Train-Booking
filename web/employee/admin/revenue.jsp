@@ -43,7 +43,7 @@
     /*
     try {
 
-        // TO BE CONTINUED
+        // revenue by transit line
         ApplicationDB db = new ApplicationDB();
         Connection con = db.getConnection();
 
