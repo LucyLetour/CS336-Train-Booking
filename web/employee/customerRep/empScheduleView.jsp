@@ -79,6 +79,11 @@
                     <td>
                         <form method="post">
                             <input type="submit" value="Edit">
+                        </form>
+                    </td>
+                    <td>
+                        <form method="post" action="processScheduleDelete.jsp">
+                            <input type="hidden" name="tid" value="<%=tid%>">
                             <input type="submit" value="Delete">
                         </form>
                     </td>
