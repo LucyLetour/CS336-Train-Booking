@@ -2,6 +2,8 @@
 <%@ page import="java.sql.Connection" %>
 <%@ page import="java.sql.PreparedStatement" %>
 <%@ page import="java.sql.ResultSet" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -42,6 +44,8 @@ try {
     ResultSet res = ps.executeQuery();
 
     int intermediate = 0;
+
+    String[] intermeds = new String[100];
     while (res.next()){
         if (res.getInt("is_origin") == 1){
             depart = res.getString("departure_time");
@@ -51,6 +55,15 @@ try {
         }
         else {
             //intermediate stops
+
+
+            String str_intermed = "SELECT stationName FROM bookingsystem.station_data WHERE sid = ?";
+            PreparedStatement ps_intermed = con.prepareStatement(str_intermed);
+            ps_intermed.setString(1,res.getString("sid"));
+            ResultSet res_intermed = ps_intermed.executeQuery();
+            if (res_intermed.next()){
+                intermeds[intermediate] = (res_intermed.getString("stationName"));
+            }
             intermediate += 1;
         }
 
@@ -75,6 +88,29 @@ try {
             %>
         </select>
         <br>
+        <%
+            //generate drop downs for any intermediate stops along the way
+            for (int i = 0; i < intermediate; i++){
+        %>
+        <label for="mid<%=i%>"> Intermediate Stop <%=i%></label>
+        <select name="mid<%=i%>" id="mid<%=i%>">
+            <option value="%"></option>
+            <%
+                stationResults = ps_st.executeQuery();
+                while (stationResults.next()){
+                    lastSelected = stationResults.getString("stationName").equals(intermeds[i]) ? "selected" : "";
+            %>
+            <option <%=lastSelected%> value="<%=stationResults.getString("stationName")%>"><%=stationResults.getString("stationName")%></option>
+            <%
+                }
+            %>
+        </select>
+        <%
+            }
+        %>
+
+        <br>
+
         <label for="dest">Destination Station:</label>
         <select name="dest" id="dest">
             <option value="%"></option>
@@ -92,14 +128,15 @@ try {
         <input type="text" id="line" name="line" value="<%=line%>">
         <br>
         <label for="arrive">Arrival Time</label>
-        <input type="datetime-local" id="arrive" name="arrive" value="<%=arrival%>">
+        <input type="text" id="arrive" name="arrive" value="<%=arrival%>">
         <br>
         <label for="depart">Departure Time</label>
-        <input type="datetime-local" id="depart" name="depart" value="<%=depart%>">
+        <input type="text" id="depart" name="depart" value="<%=depart%>">
         <br>
         <label for="fare">Fare</label>
         <input type="text" id="fare"  name="fare" value="<%=fare%>">
         <br>
+        <input type="hidden" name="intermediate" value="<%=intermediate%>">
         <input type="submit" value="Update">
     </form>
 
