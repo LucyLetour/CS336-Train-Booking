@@ -38,6 +38,7 @@
                         <th> Origin </th>
                         <th> Destination </th>
                         <th> Travel Time </th>
+                        <th> Fare </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -47,6 +48,7 @@
                 String line = res.getString("train_line");
                 String travel_time = res.getString("travel_time");
                 String tid = res.getString("tid");
+                String fare = res.getString("fare");
 
                 String str_orig = "SELECT s.stationName FROM bookingsystem.station_data s, bookingsystem.train_schedule t, bookingsystem.stops_at st WHERE t.tid = st.tid AND s.sid = st.sid AND st.is_origin=1 AND st.tid=?";
                 PreparedStatement ps_orig = con.prepareStatement(str_orig);
@@ -76,8 +78,15 @@
                     <td><%=origin%></td>
                     <td><%=dest%></td>
                     <td><%=travel_time%></td>
+                    <td><%=fare%></td>
                     <td>
-                        <form method="post">
+                        <form method="post" action="editScheduleView.jsp">
+                            <input type="hidden" name="origin" value="<%=origin%>">
+                            <input type="hidden" name="dest" value="<%=dest%>">
+                            <input type="hidden" name="line" value="<%=line%>">
+                            <input type="hidden" name="tid" value="<%=tid%>">
+                            <input type="hidden" name="fare" value="<%=fare%>">
+                            <input type="hidden" name="travel_time" value="<%=travel_time%>">
                             <input type="submit" value="Edit">
                         </form>
                     </td>
