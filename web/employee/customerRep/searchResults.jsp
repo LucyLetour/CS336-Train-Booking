@@ -75,7 +75,7 @@
                     dest = res_dest.getString("stationName");
                 }
 
-                if (origin.equals(orig_search) || dest.equals(dest_search)){
+                if (origin.equals(orig_search) && dest.equals(dest_search)){
                     %>
                     <tr>
                         <td><%=line%></td>
@@ -97,7 +97,8 @@
     %>
     </tbody>
 </table>
-
+<br>
+<br>
 <form method="post" action="empScheduleView.jsp">
     <input type="submit" value="Return">
 </form>

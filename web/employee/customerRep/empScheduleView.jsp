@@ -129,6 +129,7 @@
                     }
                 %>
                 </select>
+                <br>
                 <input type="submit" value="Search">
             </form>
             <%
