@@ -26,6 +26,7 @@ public class ApplicationDB {
         try {
             //Create a connection to your DB
             connection = DriverManager.getConnection(connectionUrl,"admin", "choochoo");
+            connection.setCatalog("bookingsystem");
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
