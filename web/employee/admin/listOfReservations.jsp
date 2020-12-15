@@ -37,6 +37,7 @@
 <body>
 
 <strong> List of Reservations</strong>
+<p> Here are a list of reservations: </p>
 
 </body>
 

@@ -37,6 +37,7 @@
 <body>
 
 <strong> Best Customer</strong>
+<p> This is the best customer: </p>
 
 </body>
 

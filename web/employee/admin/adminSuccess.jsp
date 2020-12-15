@@ -28,5 +28,9 @@
 <body>
 
 <strong> Admin Home Page </strong>
+
+<p> Welcome Admin Employee to the Admin Home Page.</p>
+<p> Here you can: Find active lines, find the best customer, get a list of reservations, get the revenue, and get a sales report.</p>
+
 </body>
 </html>

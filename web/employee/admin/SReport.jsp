@@ -36,6 +36,7 @@
 <body>
 
 <strong> Sales Report</strong>
+<p> Here is the sales report: </p>
 
 </body>
 

@@ -37,6 +37,7 @@
 <body>
 
 <strong> Revenue</strong>
+<p> Here is the revenue: </p>
 
 </body>
 
