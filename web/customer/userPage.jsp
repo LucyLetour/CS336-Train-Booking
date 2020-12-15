@@ -30,7 +30,7 @@
             %>
 
 
-            <form action="userPage.jsp" method="GET">
+            <form method="GET">
                 <label for="origin">Origin Station:</label>
                 <select name="origin" id="origin">
                     <option value="%"></option>
@@ -60,6 +60,12 @@
                 </select>
                 <label for="dtime">Departure Time:</label>
                 <input type="datetime-local" name="dtime" id="dtime" value="<%=request.getParameter("dtime")%>">
+                <label for="sortby">Sort by: </label>
+                <select name="sortby" id="sortby">
+                    <option selected value="departure_time">Departure Time</option>
+                    <option value="arrival_time">Arrival Time</option>
+                    <option value="fare">Fare</option>
+                </select>
                 <input type="submit" value="Search">
             </form>
 
@@ -70,6 +76,7 @@
             String origin = request.getParameter("origin");
             String dest = request.getParameter("dest");
             String dtime = request.getParameter("dtime").replace("T", " ").replace("%3A", ":"); //YYYY-MM-DDThh%3Amm -> YYYY-MM-DD hh:mm
+            String sortby = request.getParameter("sortby");
 
             String allTrains =
                     "SELECT ts.tid, ts.train_line, ts.fare, sa.arrival_time, sa.departure_time, sd.stationName, sd.sid " +
@@ -90,27 +97,33 @@
                     "FROM (" + allTrains + ") al " +
                     "WHERE al.stationName LIKE ?";
 
+
             String routes =
-                    "SELECT ds.tid, ds.train_line tl, ds.fare, ds.stationName dsn, ds.departure_time, ar.stationName asn, ar.arrival_time " +
+                    "SELECT ds.tid, ds.train_line tl, ds.fare fare, ds.stationName dsn, ds.departure_time departure_time, ar.stationName asn, ar.arrival_time arrival_time " +
                     "FROM (" + deptSchedule + ") ds " +
                     "INNER JOIN (" + arrSchedule + ") ar " +
                     "ON ds.tid = ar.tid " +
                     "WHERE ds.departure_time < ar.arrival_time and " +
-                          "ds.sid <> ar.sid";
+                          "ds.sid <> ar.sid ";
 
-            String stationsBetweenQ =
-                    "SELECT COUNT(*) num " +
-                    "FROM stops_at sa " +
-                    "WHERE sa.tid = ? and sa.arrival_time >= STR_TO_DATE(?, '%Y-%m-%d %H:%i') and sa.departure_time <= STR_TO_DATE(?, '%Y-%m-%d %H:%i');";
+            String bigTable =
+                    "SELECT bt.tid tid, bt.tl tl, bt.fare * (((" +
+                            "SELECT COUNT(*) num " +
+                            "FROM stops_at sa " +
+                            "WHERE bt.tid = sa.tid and sa.arrival_time >= STR_TO_DATE(bt.departure_time, '%Y-%m-%d %H:%i') and sa.departure_time <= STR_TO_DATE(bt.arrival_time, '%Y-%m-%d %H:%i')"+
+                    ") + 2) / (" +
+                            "SELECT COUNT(*) num " +
+                            "FROM stops_at sa " +
+                            "WHERE bt.tid = sa.tid "+
+                    ")) as fare, bt.dsn dsn, bt.departure_time departure_time, bt.asn asn, bt.arrival_time arrival_time " +
+                    "FROM ("+ routes +") bt";
 
-            ps = con.prepareStatement(routes);
-            out.print(dtime);
+
+            ps = con.prepareStatement(bigTable + " ORDER BY " + sortby);
             ps.setString(1, origin);
             ps.setString(2, dtime);
             ps.setString(3, dest);
             ResultSet result = ps.executeQuery();
-
-            PreparedStatement numStations = con.prepareStatement(stationsBetweenQ);
 
         %>
         <table border="2" align="center">
@@ -128,13 +141,6 @@
             <%
             // Generate table from query
             while(result.next()) {
-                numStations.setInt(1, result.getInt("tid"));
-                numStations.setString(2, result.getString("departure_time"));
-                numStations.setString(3, result.getString("arrival_time"));
-                ResultSet sBN = numStations.executeQuery();
-                sBN.next();
-                int stationsBetween = sBN.getInt("num") + 1; // + 1 for travel to dest station
-                int fare = Integer.parseInt(result.getString("fare")) / stationsBetween;
                 %>
                 <tr>
                     <td><%=result.getString("tl")%></td>
@@ -142,13 +148,16 @@
                     <td><%=result.getString("departure_time")%></td>
                     <td><%=result.getString("asn")%></td>
                     <td><%=result.getString("arrival_time")%></td>
-                    <td>$<%=fare%></td>
+                    <td>$<%=result.getString("fare")%></td>
                     <td>
                         <form action="makeReservation.jsp" method="post">
                             <input type="hidden" name="tid" value="<%=result.getInt("tid")%>">
+                            <input type="hidden" name="departure_time" value="<%=result.getString("departure_time")%>">
+                            <input type="hidden" name="arrival_time" value="<%=result.getString("arrival_time")%>">
                             <input type="hidden" name="origin" value="<%=origin%>">
-                            <input type="hidden" name="destination" value="<%=dest%>">
-                            <input type="hidden" name="fare" value="<%=fare%>">
+                            <input type="hidden" name="dest" value="<%=dest%>">
+                            <input type="hidden" name="fare" value="<%=result.getInt("fare")%>">
+                            <input type="hidden" name="dtime" value="<%=request.getParameter("dtime")%>">
                             <input type="submit" value="Make Reservation">
                         </form></td>
                 </tr>
