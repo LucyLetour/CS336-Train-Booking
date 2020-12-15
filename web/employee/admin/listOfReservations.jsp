@@ -39,6 +39,22 @@
 <strong> List of Reservations</strong>
 <p> Here are a list of reservations: </p>
 
+<%
+    /*
+    try {
+
+        // TO BE CONTINUED
+        ApplicationDB db = new ApplicationDB();
+        Connection con = db.getConnection();
+
+    }
+    catch (Exception e) {
+        e.printStackTrace();
+    }
+
+     */
+%>
+
 </body>
 
 </html>
