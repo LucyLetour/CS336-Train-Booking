@@ -88,6 +88,27 @@ try {
             %>
         </select>
         <br>
+        <%
+            //generate drop downs for any intermediate stops along the way
+            for (int i = 0; i < intermediate; i++){
+                %>
+                    <label for="mid<%=intermediate%>"> Intermediate Stop </label>
+                    <select name="mid<%=intermediate%>" id="mid<%=intermediate%>">
+                        <option value="%"></option>
+                        <%
+                            stationResults = ps_st.executeQuery();
+                            while (stationResults.next()){
+                                %>
+                                <option value="<%=stationResults.getString("stationName")%>"><%=stationResults.getString("stationName")%></option>
+                                <%
+                            }
+                        %>
+                    </select>
+                <%
+            }
+        %>
+
+        <br>
         <label for="line">Train Line</label>
         <input type="text" id="line" name="line" value="<%=line%>">
         <br>
