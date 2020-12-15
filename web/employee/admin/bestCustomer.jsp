@@ -40,6 +40,22 @@
 <strong> Best Customer</strong>
 <p> This is the best customer: </p>
 
+<%
+    /*
+    try {
+
+        // returns customer with most reservations
+        ApplicationDB db = new ApplicationDB();
+        Connection con = db.getConnection();
+
+    }
+    catch (Exception e) {
+        e.printStackTrace();
+    }
+
+     */
+%>
+
 </body>
 
 </html>

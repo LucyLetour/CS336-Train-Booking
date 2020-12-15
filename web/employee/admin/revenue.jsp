@@ -39,6 +39,22 @@
 <strong> Revenue</strong>
 <p> Here is the revenue by transit line: </p>
 
+<%
+    /*
+    try {
+
+        // revenue by transit line
+        ApplicationDB db = new ApplicationDB();
+        Connection con = db.getConnection();
+
+    }
+    catch (Exception e) {
+        e.printStackTrace();
+    }
+
+     */
+%>
+
 </body>
 
 </html>

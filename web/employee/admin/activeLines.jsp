@@ -39,6 +39,23 @@
 <strong> Active Lines</strong>
 <p> These are the most 5 active lines: </p>
 
+
+<%
+    /*
+    try {
+
+        // returns the 5 most active lines, im guessing by reservations???
+        ApplicationDB db = new ApplicationDB();
+        Connection con = db.getConnection();
+
+    }
+    catch (Exception e) {
+        e.printStackTrace();
+    }
+
+     */
+%>
+
 </body>
 
 </html>
