@@ -44,34 +44,48 @@
 <%
 
     try {
-
         // returns customer with most reservations
         ApplicationDB db = new ApplicationDB();
         Connection con = db.getConnection();
 
-        String str = "SELECT * FROM bookingsystem.passenger";
+        String str = "SELECT * FROM passenger";
         PreparedStatement ps = con.prepareStatement(str);
         ResultSet res = ps.executeQuery();
 %>
 
 
 <%
-//need to return customer with most revenue created
+    //need to return customer with most revenue created
 
+    String newPass =
+            "SELECT cd.firstname, cd.lastname, MAX(sumF.sumFare) "+
+            "FROM (SELECT p.username, sum(res.fare) sumFare "+
+            "FROM passenger p "+
+            "INNER JOIN reservation_data res "+
+            "ON p.rid = res.rid "+
+            "GROUP BY p.username) sumF "+
+            "INNER JOIN customer_data cd "+
+            "ON cd.username = sumF.username ";
 
+    //join pass res_d on rid, username and fare , sum fare gb username, max select
 
+    con.prepareStatement(newPass);
+    ps = con.prepareStatement(newPass);
+    ResultSet result = ps.executeQuery();
+    result.next();
+    String firstname= result.getString("firstname");
+    String lastname = result.getString("lastname");
 
 %>
 
 
-<%
+<p> <%= firstname + " " + lastname %></p>
 
+<%
     }
     catch (Exception e) {
         e.printStackTrace();
     }
-
-
 %>
 
 </body>
