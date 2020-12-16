@@ -10,6 +10,7 @@
 <%@ page import="java.sql.Connection" %>
 <%@ page import="java.sql.PreparedStatement" %>
 <%@ page import="java.sql.ResultSet" %>
+<%@ page import="java.util.Date" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -29,32 +30,82 @@
     <li class="navbar-entry"><a href="customerRepEdit.jsp">Customer Rep Editing</a></li>
     <li class="navbar-entry right-padding"><a id="logout" href="../../login/logout.jsp">Logout</a></li>
 </ul>
-<html>
 
-<head>
-    <title>Active Lines</title>
-</head>
 
-<body>
+
+
 
 <strong> Active Lines</strong>
 <p> These are the most 5 active lines: </p>
 
 
-<%
-    /*
-    try {
 
-        // returns the 5 most active lines, im guessing by reservations per month
+<%
+
+    try {
+        // reserves by customer
         ApplicationDB db = new ApplicationDB();
         Connection con = db.getConnection();
 
+        String str = "SELECT * FROM train_schedule";
+        PreparedStatement ps = con.prepareStatement(str);
+        ResultSet res = ps.executeQuery();
+%>
+
+
+<%
+    //reserves on train line
+    String newPass =
+            "SELECT ts.tid, ts.train_line trainline, rtrip.rid, COUNT(ts.train_line) bitch "+
+            "FROM (SELECT t.tid, r.rid, r.reservationDate "+
+            "FROM reservation_data r "+
+            "INNER JOIN trip t "+
+            "ON r.rid = t.rid "+
+            "WHERE month(r.reservationDate) = ? "+
+            "GROUP BY r.rid) rtrip "+
+    "INNER JOIN train_schedule ts "+
+    "ON ts.tid = rtrip.tid "+
+    "GROUP BY ts.train_line "+
+    "ORDER BY bitch desc "+
+    "LIMIT 5 ";
+
+
+
+    con.prepareStatement(newPass);
+    ps = con.prepareStatement(newPass);
+    ps.setInt(1 , new Date().getMonth()+1);
+    ResultSet result = ps.executeQuery();
+
+%>
+
+
+
+<table border="2" align="center">
+    <thead>
+    <tr>
+        <th>Transit Line</th>
+        <th>Number of Reservations</th>
+    </tr>
+    </thead>
+    <tbody>
+    <%
+        while(result.next()){
+    %>
+    <tr>
+        <td><%=result.getString("trainline")%></td>
+        <td><%=result.getInt("bitch")%></td>
+    </tr>
+    <%
+        }
+    %>
+    </tbody>
+</table>
+
+<%
     }
     catch (Exception e) {
         e.printStackTrace();
     }
-
-     */
 %>
 
 </body>

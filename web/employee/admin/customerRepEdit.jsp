@@ -22,16 +22,15 @@
     <li class="navbar-entry"><a href="adminSuccess.jsp">Admin Home</a></li>
     <li class="navbar-entry right-padding"><a id="logout" href="../../login/logout.jsp">Logout</a></li>
 </ul>
-<html>
-<head>
-    <title>Customer Rep Account</title>
-</head>
-<body>
 
 <strong> Control Customer Rep Accounts </strong>
 
 <p> Here you can: add, delete, and edit Customer Representative Accounts</p>
-
+<%
+    if(session.getAttribute("user_status") != null) {
+        out.print(session.getAttribute("user_status"));
+    }
+%>
 <%
     try {
 
@@ -39,7 +38,7 @@
         ApplicationDB db = new ApplicationDB();
         Connection con = db.getConnection();
     %>
-        <table border="2", align="center">
+        <table border="2" align="center">
         <thead>
         <tr>
             <th>Username</th>
@@ -57,8 +56,13 @@
                 <tr>
                     <td><%= res.getString("username")%></td>
                 <td>
-                <form method="post" action= "crEdit.jsp">
+                <form method="post" action= "repUpdateForm.jsp">
                 <input type="hidden" name="ssn" value="<%= res.getString("ssn")%>">
+                <input type="hidden" name="fname" value="<%=res.getString("firstname")%>">
+                <input type="hidden" name="lname" value="<%=res.getString("lastname")%>">
+                <input type="hidden" name="user" value="<%=res.getString("username")%>">
+                <input type="hidden" name="pass" value="<%=res.getString("pass")%>">
+                <input type="hidden" name="auth" value="<%=res.getString("authority")%>">
                 <input type="submit" value="Edit">
                 </form>
                 </td>
@@ -77,6 +81,31 @@
         %>
         </tbody>
         </table>
+        <br>
+        <p>Create an Account: </p>
+        <br>
+        <form method="post" action="addCustomerRep.jsp">
+            <label for="ssn">SSN: </label>
+            <input type="text" id="ssn" name="ssn">
+            <br>
+            <label for="fname">First Name: </label>
+            <input type="text" id="fname" name="fname">
+            <br>
+            <label for="lname">Last Name: </label>
+            <input type="text" id="lname" name="lname">
+            <br>
+            <label for="user">Username: </label>
+            <input type="text" id="user" name="user">
+            <br>
+            <label for="pass">Password: </label>
+            <input type="text" id="pass" name="pass">
+            <br>
+            <label for="auth">Authority level: </label>
+            <input type="text" id="auth" name="auth">
+            <br>
+            <input type="submit" value="Create">
+        </form>
+
 
 
 <%
