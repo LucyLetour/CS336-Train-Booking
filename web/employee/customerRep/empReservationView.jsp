@@ -90,6 +90,27 @@
 
                 </tbody>
             </table>
+            <br>
+            <form method="post" action="resSearch.jsp">
+                <label for="t">Transit Line</label>
+                <!--<input type="text" id="t" name="transit"> -->
+                <select id="t" name="transit">
+                    <%
+                    String get_st = "SELECT DISTINCT train_line FROM bookingsystem.train_schedule";
+                        PreparedStatement ps_st = con.prepareStatement(get_st);
+                        ResultSet lineResults = ps_st.executeQuery();
+                        while(lineResults.next()) {
+                            %><option value="<%=lineResults.getString("train_line")%>"><%=lineResults.getString("train_line")%></option> <%
+                        }
+
+                    %>
+
+                </select>
+                <label for="d">Date</label>
+                <input type="datetime-local" id="d" name="date">
+                <input type="submit" value="Search">
+
+            </form>
             <%
 
 
