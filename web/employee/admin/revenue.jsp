@@ -37,37 +37,13 @@
 
 <body>
 
-<strong> Revenue</strong>
-<p> Here is the revenue by transit line or customer: </p>
-
-<%
-
-    try {
-        // revenue by transit line or customer
-        ApplicationDB db = new ApplicationDB();
-        Connection con = db.getConnection();
-
-        String str = "SELECT * FROM train_schedule";
-        PreparedStatement ps = con.prepareStatement(str);
-        ResultSet res = ps.executeQuery();
-%>
-
-
-<%
-    //sum revenue by transit line or customer
-
-
-
- %>
-
-
-
-<%
-    }
-    catch (Exception e) {
-        e.printStackTrace();
-    }
-%>
+<strong> Revenue by Customer Name or Transit Line</strong>
+<form method="post" action="revenueCust.jsp">
+    <input type="submit" value="Revenue By Customer Name">
+</form>
+<form method="post" action="revenueTrain.jsp">
+    <input type="submit" value="Revenue By Transit Line">
+</form>
 
 </body>
 
