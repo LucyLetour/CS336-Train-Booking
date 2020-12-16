@@ -31,9 +31,7 @@
         pc.executeUpdate();
         db.closeConnection(con);
 
-        request.sendRedirect("customerRepEdit.jsp");
-
-
+        response.sendRedirect("customerRepEdit.jsp");
 
 
     }
