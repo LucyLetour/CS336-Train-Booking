@@ -61,7 +61,7 @@
                 <label for="dtime">Departure Time:</label>
                 <input type="datetime-local" name="dtime" id="dtime" value="<%=request.getParameter("dtime")%>">
                 <label for="sortby">Sort by: </label>
-                <select name="sortby" id="sortby">
+                <select name="sortby" id="sortby" value="<%=request.getParameter("sortby")%>">
                     <option selected value="departure_time">Departure Time</option>
                     <option value="arrival_time">Arrival Time</option>
                     <option value="fare">Fare</option>
