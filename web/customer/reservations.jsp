@@ -68,7 +68,11 @@
 
             // pog
             while (r.next()) {
-                if(r.getTimestamp("resDate").before(new java.util.Date())) pending = false;
+                if(r.getTimestamp("resDate").before(new java.util.Date())) {
+                    pending = false;
+                }
+
+                int tid = r.getInt("tid");
 
                 ps = con.prepareStatement(getStationName);
                 ps.setInt(1, r.getInt("osid"));
@@ -87,12 +91,12 @@
                 ps.setInt(2, r.getInt("dsid"));
                 temp = ps.executeQuery();
                 temp.next();
-                Timestamp arrTime = temp.getTimestamp("arrival_time");
+                String arrTime = temp.getString("arrival_time");
 
                 ps = con.prepareStatement(stationsBetween);
                 ps.setInt(1, r.getInt("tid"));
                 ps.setTimestamp(2, r.getTimestamp("resDate"));
-                ps.setTimestamp(3, arrTime);
+                ps.setTimestamp(3, Timestamp.valueOf(arrTime));
                 temp = ps.executeQuery();
 
                 StringBuilder intermediates = new StringBuilder(oname);
@@ -102,19 +106,18 @@
                     intermediates.append(temp.getString("name")).append(" -> ");
                 }
 
+
                 String allStations = intermediates.append(dname).toString();
 
                 %>
-                <button type="button" class="collapsible" onclick="collapsibleOnClick(this.id)">Reservation <%=oname%> -> <%=dname%> on <%=r.getTimestamp("resDate")%></button>
+                <button type="button" class="collapsible" onclick="collapsibleOnClick(this.id)">Train <%=tid%> <%=oname%> -> <%=dname%> on <%=r.getTimestamp("resDate")%></button>
                 <div class="content, active">
                     <p><%=allStations%>, $<%=r.getFloat("fare")%></p>
                     <p><%=r.getTimestamp("resDate")%> to <%=arrTime%></p>
                     <%
-                        if (pending) {
-                    %>
-                    <form action="deleteReservation.jsp" method="post"><input type="hidden" name="rid" value="<%=r.getInt("rid")%>"><input type="submit" value="cancel"></form>
-                    <%
-                        }
+                        if (pending) { %>
+                            <form action="deleteReservation.jsp" method="post"><input type="hidden" name="rid" value="<%=r.getInt("rid")%>"><input type="submit" value="cancel"></form>
+                    <% }
                     %>
                 </div>
             <% }

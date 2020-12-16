@@ -1,5 +1,7 @@
 <%@ page import="db.ApplicationDB" %>
 <%@ page import="java.sql.*" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="java.util.HashMap" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
     <head>
@@ -50,11 +52,16 @@
             r.next();
             int dStationSid = r.getInt("sid");
 
-            int mult = request.getParameter("roundtrip") == null ? 1 : 2;
+            float disabled = request.getParameter("disabled") == null ? 1 : 0.5f;
+            float senior = request.getParameter("senior") == null ? 1 : 0.65f;
+            float minor = request.getParameter("minor") == null ? 1 : 0.75f;
+
+            float mult = request.getParameter("roundtrip") == null ? 1 : 2;
+            mult *= Math.min(disabled, Math.min(senior, minor));
 
             ps = con.prepareStatement(rd, Statement.RETURN_GENERATED_KEYS);
             ps.setTimestamp(1, Timestamp.valueOf(request.getParameter("departure_time")));
-            ps.setInt(2, Integer.parseInt(request.getParameter("fare")) * mult);
+            ps.setFloat(2, Float.parseFloat(request.getParameter("fare")) * mult);
             ps.executeUpdate();
 
             r = ps.getGeneratedKeys();

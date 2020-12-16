@@ -37,7 +37,7 @@
             ApplicationDB db = new ApplicationDB();
             Connection con = db.getConnection();
 
-            int onewayFare = Integer.parseInt(request.getParameter("fare"));
+            float onewayFare = Float.parseFloat(request.getParameter("fare"));
             String origin = request.getParameter("origin");
             String dest = request.getParameter("dest");
             String dtime = request.getParameter("dtime");
@@ -68,7 +68,7 @@
         <h2> Your trip: </h2>
         <h3> <%=allStations%> </h3>
 
-        <form action="createReservation.jsp" method="post" onsubmit="setSubmittingForm()" oninput="vFare.value=`$` + (!roundtrip.checked || roundtrip.indeterminate ? 1 : 2)*<%=onewayFare%>">
+        <form action="createReservation.jsp" method="post" onsubmit="setSubmittingForm()" oninput="vFare.value=`$` + ((!roundtrip.checked || roundtrip.indeterminate ? 1 : 2)*<%=onewayFare%>*Math.min((!disabled.checked || disabled.indeterminate ? 1 : 0.5), Math.min((!minor.checked || minor.indeterminate ? 1 : 0.75), (!senior.checked || senior.indeterminate ? 1 : 0.65))).toFixed(2))">
             <table>
                 <tr>
                     <td><label for="roundtrip">Roundtrip: </label><input type="checkbox" name="roundtrip" id="roundtrip" value="2"></td>
@@ -78,13 +78,13 @@
                     <td><label> Please select all that apply: </label></td>
                 </tr>
                 <tr>
-                   <td><label for="disabled"> - Disabled: </label><input type="checkbox" id="disabled" value="unchecked"></td>
+                   <td><label for="disabled"> - Disabled: </label><input type="checkbox" name="disabled" id="disabled" value="unchecked"></td>
                 </tr>
                 <tr>
-                    <td><label for="senior"> - Senior (age 60+): </label><input type="checkbox" id="senior" value="unchecked"></td>
+                    <td><label for="senior"> - Senior (age 60+): </label><input type="checkbox" name="senior" id="senior" value="unchecked"></td>
                 </tr>
                 <tr>
-                    <td><label for="minor"> - Minor (under 18): </label><input type="checkbox" id="minor" value="unchecked"></td>
+                    <td><label for="minor"> - Minor (under 18): </label><input type="checkbox" name="minor" id="minor" value="unchecked"></td>
                 </tr>
             </table>
             <input type="hidden" name="origin" value="<%=origin%>">

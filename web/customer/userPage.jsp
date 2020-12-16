@@ -113,7 +113,7 @@
                             "SELECT COUNT(*) num " +
                             "FROM stops_at sa " +
                             "WHERE bt.tid = sa.tid and sa.arrival_time >= STR_TO_DATE(bt.departure_time, '%Y-%m-%d %H:%i') and sa.departure_time <= STR_TO_DATE(bt.arrival_time, '%Y-%m-%d %H:%i')"+
-                    ") + 2) / (" +
+                    ") + 2.0) / (" +
                             "SELECT COUNT(*) num " +
                             "FROM stops_at sa " +
                             "WHERE bt.tid = sa.tid "+
@@ -158,7 +158,7 @@
                             <input type="hidden" name="arrival_time" value="<%=result.getString("arrival_time")%>">
                             <input type="hidden" name="origin" value="<%=result.getString("dsn")%>">
                             <input type="hidden" name="dest" value="<%=result.getString("asn")%>">
-                            <input type="hidden" name="fare" value="<%=result.getInt("fare")%>">
+                            <input type="hidden" name="fare" value="<%=result.getFloat("fare")%>">
                             <input type="hidden" name="dtime" value="<%=request.getParameter("dtime")%>">
                             <input type="submit" value="Make Reservation">
                         </form>
