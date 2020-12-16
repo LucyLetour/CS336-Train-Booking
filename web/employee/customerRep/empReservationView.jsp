@@ -49,7 +49,7 @@
                     while(result.next()){
 
                         //get tid of customers reservation
-                        String rid = Integer.toString(result.getInt("rid"));
+                        String rid = Float.toString(result.getFloat("rid"));
                         String str_cust = "SELECT tid FROM bookingsystem.trip WHERE rid = ?";
                         PreparedStatement ps_cust = con.prepareStatement(str_cust);
                         ps_cust.setString(1,rid);
