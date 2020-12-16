@@ -37,22 +37,62 @@
 <body>
 
 <strong> Sales Report</strong>
-<p> Here is the sales report for your month: </p>
+<p> Here is the sales report per month: </p>
 
 <%
-    /*
+
     try {
 
-        // sales report by month
+        // sales report per month
         ApplicationDB db = new ApplicationDB();
         Connection con = db.getConnection();
 
+        String str = "SELECT * FROM passenger";
+        PreparedStatement ps = con.prepareStatement(str);
+        ResultSet res = ps.executeQuery();
+%>
+
+<%
+    String newPass =
+            "SELECT month(reservationDate) m, sum(fare) f "+
+            "FROM reservation_data rd "+
+            "GROUP BY m ";
+
+
+
+
+    con.prepareStatement(newPass);
+    ps = con.prepareStatement(newPass);
+    ResultSet result = ps.executeQuery();
+
+%>
+
+<table border="2" align="center">
+    <thead>
+    <tr>
+        <th>Month</th>
+        <th>Fare</th>
+    </tr>
+    </thead>
+    <tbody>
+    <%
+        while(result.next()){
+    %>
+    <tr>
+        <td><%=result.getString("m")%></td>
+        <td><%=result.getFloat("f")%></td>
+    </tr>
+    <%
+        }
+    %>
+    </tbody>
+</table>
+
+<%
     }
     catch (Exception e) {
         e.printStackTrace();
     }
-
-     */
 %>
 
 </body>
