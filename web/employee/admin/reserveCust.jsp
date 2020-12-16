@@ -34,6 +34,65 @@
     <title>Reservations by Customer</title>
 </head>
 <body>
+<%
 
+    try {
+        // reserves by customer
+        ApplicationDB db = new ApplicationDB();
+        Connection con = db.getConnection();
+
+        String str = "SELECT * FROM passenger";
+        PreparedStatement ps = con.prepareStatement(str);
+        ResultSet res = ps.executeQuery();
+%>
+
+
+<%
+    //reserves on customer
+    String newPass =
+            "SELECT pc.firstname, pc.lastname, pc.rid "+
+            "FROM(SELECT p.username, p.rid, cd.firstname, cd.lastname "+
+            "FROM passenger p "+
+            "INNER JOIN customer_data cd "+
+            "ON p.username = cd.username "+
+            "GROUP BY p.rid) pc ";
+
+
+
+    con.prepareStatement(newPass);
+    ps = con.prepareStatement(newPass);
+    ResultSet result = ps.executeQuery();
+
+%>
+
+<table border="2" align="center">
+    <thead>
+    <tr>
+        <th>Customer First Name</th>
+        <th>Customer Last Name</th>
+        <th>Reservation Number</th>
+    </tr>
+    </thead>
+    <tbody>
+    <%
+        while(result.next()){
+    %>
+    <tr>
+        <td><%=result.getString("firstname")%></td>
+        <td><%=result.getString("lastname")%></td>
+        <td><%=result.getInt("rid")%></td>
+    </tr>
+    <%
+        }
+    %>
+    </tbody>
+</table>
+
+<%
+    }
+    catch (Exception e) {
+        e.printStackTrace();
+    }
+%>
 </body>
 </html>

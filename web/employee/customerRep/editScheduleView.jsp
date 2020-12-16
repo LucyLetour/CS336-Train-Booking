@@ -47,6 +47,10 @@ try {
     int intermediate = 0;
 
     String[] intermeds = new String[100];
+
+    String[] intermed_arrive = new String[100];
+    String[] intermed_depart = new String[100];
+
     while (res.next()){
         if (res.getInt("is_origin") == 1){
             depart = res.getString("departure_time");
@@ -64,6 +68,8 @@ try {
             ResultSet res_intermed = ps_intermed.executeQuery();
             if (res_intermed.next()){
                 intermeds[intermediate] = (res_intermed.getString("stationName"));
+                intermed_arrive[intermediate] = res.getString("arrival_time");
+                intermed_depart[intermediate] = res.getString("departure_time");
             }
             intermediate += 1;
         }
@@ -89,11 +95,16 @@ try {
             %>
         </select>
         <br>
+        <label for="depart">Departure Time</label>
+        <input type="text" id="depart" name="depart" value="<%=depart%>">
+
+        <br>
+        <br>
         <%
             //generate drop downs for any intermediate stops along the way
             for (int i = 0; i < intermediate; i++){
         %>
-        <label for="mid<%=i%>"> Intermediate Stop <%=i%></label>
+        <label for="mid<%=i%>"> Intermediate Stop</label>
         <select name="mid<%=i%>" id="mid<%=i%>">
             <option value=""></option>
             <%
@@ -106,12 +117,18 @@ try {
                 }
             %>
         </select>
+        <br>
+        <label for="mid_arrive<%=i%>">Intermediate Arrival</label>
+        <input type="text" id="mid_arrive<%=i%>" name="mid_arrive<%=i%>" value="<%=intermed_arrive[i]%>">
+        <br>
+        <label for="mid_depart<%=i%>">Intermediate Depart</label>
+        <input type="text" id="mid_depart<%=i%>" name="mid_depart<%=i%>" value="<%=intermed_depart[i]%>">
+        <br>
+        <br>
         <%
             }
         %>
-
         <br>
-
         <label for="dest">Destination Station:</label>
         <select name="dest" id="dest">
             <option value="%"></option>
@@ -125,14 +142,11 @@ try {
             %>
         </select>
         <br>
-        <label for="line">Train Line</label>
-        <input type="text" id="line" name="line" value="<%=line%>">
-        <br>
         <label for="arrive">Arrival Time</label>
         <input type="text" id="arrive" name="arrive" value="<%=arrival%>">
         <br>
-        <label for="depart">Departure Time</label>
-        <input type="text" id="depart" name="depart" value="<%=depart%>">
+        <label for="line">Train Line</label>
+        <input type="text" id="line" name="line" value="<%=line%>">
         <br>
         <label for="fare">Fare</label>
         <input type="text" id="fare"  name="fare" value="<%=fare%>">

@@ -3,6 +3,10 @@
 <%@ page import="java.sql.PreparedStatement" %>
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="sun.security.krb5.internal.crypto.RsaMd5CksumType" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.text.DateFormat" %>
+<%@ page import="java.util.Date" %>
+<%@ page import="java.sql.Timestamp" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -14,6 +18,8 @@
 <%
     // we need to modify stops_at, then train_schedule to preserve foreign key constraints
     // for now this just displays the data for debugging
+
+
     try {
         //get new intermediate stops
         int intermediate_num = Integer.parseInt(request.getParameter("intermediate"));
@@ -27,6 +33,16 @@
         for (int i = 0; i < intermediate_num; i++) {
             old_intermeds[i] = request.getParameter("old"+Integer.toString(i));
         }
+
+        //get intermediate stop arrival times
+        //get intermediate stop departure times
+        String[] intermed_arrival = new String[100];
+        String[] intermed_depart = new String[100];
+        for (int i=0; i < intermediate_num; i++){
+            intermed_arrival[i] = request.getParameter("mid_arrive"+Integer.toString(i));
+            intermed_depart[i] = request.getParameter("mid_depart"+Integer.toString(i));
+        }
+
 
         String origin = request.getParameter("origin");
         String dest = request.getParameter("dest");
@@ -93,70 +109,109 @@
         }
 
 
-        //modify stops_at first
+        boolean valid = true;
+        DateFormat formatter;
+        formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        //UPDATE bookingSystem.stops_at
-        //SET sid = station, is_origin = 0, is_dest = 0,  departure_time = dt
-        //WHERE tid = tid;
+        Date depart_dt = formatter.parse(departure);
+        Date arrive_dt = formatter.parse(arrival);
 
-        //modify entry for origin station
-        String update_orig = "UPDATE bookingsystem.stops_at SET sid = ?, is_origin=1, is_dest=0, departure_time = ? WHERE tid = ? AND is_origin = 1";
-        PreparedStatement ps_stops_orig = con.prepareStatement(update_orig);
-        ps_stops_orig.setString(1,Integer.toString(origin_sid));
-        ps_stops_orig.setString(2,departure);
-        ps_stops_orig.setString(3,tid);
-        int res_stops_orig = ps_stops_orig.executeUpdate();
+        Timestamp depart_timestamp = new Timestamp(depart_dt.getTime());
+        Timestamp arrive_timestamp = new Timestamp(arrive_dt.getTime());
+
+        if (arrive_timestamp.before(depart_timestamp)) {
+            valid = false;
+        }
+        else {
+            for (int i=0; i < intermediate_num; i++){
+                Date temp_arr = formatter.parse(intermed_arrival[i]);
+                Date temp_dept = formatter.parse(intermed_depart[i]);
+                Timestamp arr_timestamp = new Timestamp(temp_arr.getTime());
+                Timestamp dept_timestamp = new Timestamp(temp_dept.getTime());
+                if (arr_timestamp.after(dept_timestamp)){
+                    valid = false;
+                    break;
+                }
+                if (arr_timestamp.before(depart_timestamp) || dept_timestamp.before(depart_timestamp)){
+                    valid = false;
+                    break;
+                }
 
 
-        //modify entry for destination station
-        String update_dest = "UPDATE bookingsystem.stops_at SET sid=?, is_origin = 0, is_dest = 1, arrival_time = ? WHERE tid = ? AND is_dest = 1";
-        PreparedStatement ps_stops_dest = con.prepareStatement(update_dest);
-        ps_stops_dest.setString(1,Integer.toString(dest_sid));
-        ps_stops_dest.setString(2,arrival);
-        ps_stops_dest.setString(3,tid);
-        int res_stops_dest = ps_stops_dest.executeUpdate();
-
-
-        //modify enrtry(s) for intermediate stations
-        for (int i = 0; i < intermediate_num;i++){
-
-            if (intermed_sid[i] == -1){
-                String del_med = "DELETE FROM bookingsystem.stops_at WHERE tid= ? AND sid = ?";
-                PreparedStatement ps_del = con.prepareStatement(del_med);
-                ps_del.setString(1,tid);
-                ps_del.setString(2,Integer.toString(old_intermed_sid[i]));
-                int res_del = ps_del.executeUpdate();
-            }
-            else {
-                String update_med = "UPDATE  bookingsystem.stops_at SET sid=?, is_origin = 0, is_dest = 0 WHERE tid = ? AND sid= ? ";
-                PreparedStatement ps_stops_med = con.prepareStatement(update_med);
-                ps_stops_med.setString(1,Integer.toString(intermed_sid[i]));
-                ps_stops_med.setString(2,tid);
-                ps_stops_med.setString(3,Integer.toString(old_intermed_sid[i]));
-                int res_stops_med = ps_stops_med.executeUpdate();
             }
         }
 
+        if(valid == false){
+            out.println("Invalid Times");
+            db.closeConnection(con);
+            response.sendRedirect("editScheduleView.jsp");
+        }
+        else {
+            //modify stops_at first
+
+            //UPDATE bookingSystem.stops_at
+            //SET sid = station, is_origin = 0, is_dest = 0,  departure_time = dt
+            //WHERE tid = tid;
+
+            //modify entry for origin station
+            String update_orig = "UPDATE bookingsystem.stops_at SET sid = ?, is_origin=1, is_dest=0, departure_time = ? WHERE tid = ? AND is_origin = 1";
+            PreparedStatement ps_stops_orig = con.prepareStatement(update_orig);
+            ps_stops_orig.setString(1,Integer.toString(origin_sid));
+            ps_stops_orig.setString(2,departure);
+            ps_stops_orig.setString(3,tid);
+            int res_stops_orig = ps_stops_orig.executeUpdate();
 
 
-        //modify train_schedule
-        // NEED TO FIX TRAVEL TIME
-
-        //UPDATE bookingSystem.train_schedule
-        //SET train_line = line, fare = fare
-        //WHERE tid = tid;
-
-        String update_sch = "UPDATE bookingsystem.train_schedule SET train_line = ?, fare = ? WHERE tid = ?";
-        PreparedStatement ps_sch = con.prepareStatement(update_sch);
-        ps_sch.setString(1,line);
-        ps_sch.setString(2,fare);
-        ps_sch.setString(3,tid);
-        int res_update_sch = ps_sch.executeUpdate();
+            //modify entry for destination station
+            String update_dest = "UPDATE bookingsystem.stops_at SET sid=?, is_origin = 0, is_dest = 1, arrival_time = ? WHERE tid = ? AND is_dest = 1";
+            PreparedStatement ps_stops_dest = con.prepareStatement(update_dest);
+            ps_stops_dest.setString(1,Integer.toString(dest_sid));
+            ps_stops_dest.setString(2,arrival);
+            ps_stops_dest.setString(3,tid);
+            int res_stops_dest = ps_stops_dest.executeUpdate();
 
 
+            //modify enrtry(s) for intermediate stations
+            for (int i = 0; i < intermediate_num;i++){
 
-        db.closeConnection(con);
-        response.sendRedirect("empScheduleView.jsp");
+                if (intermed_sid[i] == -1){
+                    String del_med = "DELETE FROM bookingsystem.stops_at WHERE tid= ? AND sid = ?";
+                    PreparedStatement ps_del = con.prepareStatement(del_med);
+                    ps_del.setString(1,tid);
+                    ps_del.setString(2,Integer.toString(old_intermed_sid[i]));
+                    int res_del = ps_del.executeUpdate();
+                }
+                else {
+                    String update_med = "UPDATE bookingsystem.stops_at SET sid=?, is_origin = 0, is_dest = 0, arrival_time=?, departure_time = ? WHERE tid = ? AND sid= ? ";
+                    PreparedStatement ps_stops_med = con.prepareStatement(update_med);
+                    ps_stops_med.setString(1,Integer.toString(intermed_sid[i]));
+                    ps_stops_med.setString(2,intermed_arrival[i]);
+                    ps_stops_med.setString(3,intermed_depart[i]);
+                    ps_stops_med.setString(4,tid);
+                    ps_stops_med.setString(5,Integer.toString(old_intermed_sid[i]));
+                    int res_stops_med = ps_stops_med.executeUpdate();
+                }
+            }
+
+
+
+            //modify train_schedule
+            // NEED TO FIX TRAVEL TIME
+
+            //UPDATE bookingSystem.train_schedule
+            //SET train_line = line, fare = fare
+            //WHERE tid = tid;
+
+            String update_sch = "UPDATE bookingsystem.train_schedule SET train_line = ?, fare = ? WHERE tid = ?";
+            PreparedStatement ps_sch = con.prepareStatement(update_sch);
+            ps_sch.setString(1,line);
+            ps_sch.setString(2,fare);
+            ps_sch.setString(3,tid);
+            int res_update_sch = ps_sch.executeUpdate();
+            db.closeConnection(con);
+            response.sendRedirect("empScheduleView.jsp");
+        }
+
 
     }
     catch (Exception e){

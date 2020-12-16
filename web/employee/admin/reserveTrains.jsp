@@ -37,7 +37,7 @@
 <%
 
     try {
-        // revenue by customer
+        // reserves by customer
         ApplicationDB db = new ApplicationDB();
         Connection con = db.getConnection();
 
@@ -48,11 +48,17 @@
 
 
 <%
-    //sum revenue by transit line
+    //reserves on train line
     String newPass =
-            "SELECT ts.train_line, sum(ts.fare) sumFare "+
-                    "FROM train_schedule ts "+
-                    "GROUP BY ts.train_line ";
+            "SELECT ts.tid, ts.train_line, rtrip.rid " +
+                    "FROM (SELECT t.tid, r.rid " +
+                    "        FROM reservation_data r " +
+                    "        INNER JOIN trip t " +
+                    "        ON r.rid = t.rid " +
+                    "        GROUP BY r.rid) rtrip " +
+                    "INNER JOIN train_schedule ts " +
+                    "ON ts.tid = rtrip.tid ";
+
 
 
     con.prepareStatement(newPass);
@@ -65,7 +71,7 @@
     <thead>
     <tr>
         <th>Transit Line</th>
-        <th>Total Revenue</th>
+        <th>Reservation Number</th>
     </tr>
     </thead>
     <tbody>
@@ -74,7 +80,7 @@
     %>
     <tr>
         <td><%=result.getString("train_line")%></td>
-        <td><%=result.getInt("sumFare")%></td>
+        <td><%=result.getInt("rtrip.rid")%></td>
     </tr>
     <%
         }
