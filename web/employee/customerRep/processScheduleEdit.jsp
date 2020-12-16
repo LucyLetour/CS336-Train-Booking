@@ -28,6 +28,16 @@
             old_intermeds[i] = request.getParameter("old"+Integer.toString(i));
         }
 
+        //get intermediate stop arrival times
+        //get intermediate stop departure times
+        String[] intermed_arrival = new String[100];
+        String[] intermed_depart = new String[100];
+        for (int i=0; i < intermediate_num; i++){
+            intermed_arrival[i] = request.getParameter("mid_arrive"+Integer.toString(i));
+            intermed_depart[i] = request.getParameter("mid_depart"+Integer.toString(i));
+        }
+
+
         String origin = request.getParameter("origin");
         String dest = request.getParameter("dest");
         String line = request.getParameter("line");
@@ -128,11 +138,13 @@
                 int res_del = ps_del.executeUpdate();
             }
             else {
-                String update_med = "UPDATE  bookingsystem.stops_at SET sid=?, is_origin = 0, is_dest = 0 WHERE tid = ? AND sid= ? ";
+                String update_med = "UPDATE bookingsystem.stops_at SET sid=?, is_origin = 0, is_dest = 0, arrival_time=?, departure_time = ? WHERE tid = ? AND sid= ? ";
                 PreparedStatement ps_stops_med = con.prepareStatement(update_med);
                 ps_stops_med.setString(1,Integer.toString(intermed_sid[i]));
-                ps_stops_med.setString(2,tid);
-                ps_stops_med.setString(3,Integer.toString(old_intermed_sid[i]));
+                ps_stops_med.setString(2,intermed_arrival[i]);
+                ps_stops_med.setString(3,intermed_depart[i]);
+                ps_stops_med.setString(4,tid);
+                ps_stops_med.setString(5,Integer.toString(old_intermed_sid[i]));
                 int res_stops_med = ps_stops_med.executeUpdate();
             }
         }
