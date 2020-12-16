@@ -41,11 +41,13 @@
             String origin = request.getParameter("origin");
             String dest = request.getParameter("dest");
             String dtime = request.getParameter("dtime");
+            int tid = Integer.parseInt(request.getParameter("tid"));
+
 
             String stationsBetween =
                     "SELECT stations.stationName name " +
-                            "FROM stops_at sa, station_data stations " +
-                            "WHERE ? = sa.tid and stations.sid = sa.sid and sa.arrival_time >= STR_TO_DATE(?, '%Y-%m-%d %H:%i') and sa.departure_time <= STR_TO_DATE(?, '%Y-%m-%d %H:%i')";
+                    "FROM stops_at sa, station_data stations " +
+                    "WHERE ? = sa.tid and stations.sid = sa.sid and sa.arrival_time >= STR_TO_DATE(?, '%Y-%m-%d %H:%i') and sa.departure_time <= STR_TO_DATE(?, '%Y-%m-%d %H:%i')";
 
             PreparedStatement sb = con.prepareStatement(stationsBetween);
             sb.setInt(1, Integer.parseInt(request.getParameter("tid")));
@@ -69,7 +71,7 @@
         <form action="createReservation.jsp" method="post" onsubmit="setSubmittingForm()" oninput="vFare.value=`$` + (!roundtrip.checked || roundtrip.indeterminate ? 1 : 2)*<%=onewayFare%>">
             <table>
                 <tr>
-                    <td><label for="roundtrip">Roundtrip: </label><input type="checkbox" id="roundtrip" value="unchecked"></td>
+                    <td><label for="roundtrip">Roundtrip: </label><input type="checkbox" name="roundtrip" id="roundtrip" value="2"></td>
                     <td><output name="vFare" for="roundtrip fare">$<%=onewayFare%></output></td>
                 </tr>
                 <tr>
@@ -85,11 +87,17 @@
                     <td><label for="minor"> - Minor (under 18): </label><input type="checkbox" id="minor" value="unchecked"></td>
                 </tr>
             </table>
-            <input type="hidden" name="paidFare" value="vFare">
+            <input type="hidden" name="origin" value="<%=origin%>">
+            <input type="hidden" name="tid" value="<%=tid%>">
+            <input type="hidden" name="dest" value="<%=dest%>">
+            <input type="hidden" name="dtime" value="<%=dtime%>">
+            <input type="hidden" name="departure_time" value="<%=request.getParameter("departure_time")%>">
+            <input type="hidden" name="fare" value="<%=onewayFare%>">
             <input type="submit" value="Make Reservation">
         </form>
         <form action="userPage.jsp" method="get">
             <input type="hidden" name="origin" value="<%=origin%>">
+            <input type="hidden" name="tid" value="<%=tid%>">
             <input type="hidden" name="dest" value="<%=dest%>">
             <input type="hidden" name="dtime" value="<%=dtime%>">
             <input type="submit" value="Cancel">

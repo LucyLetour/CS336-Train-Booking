@@ -156,12 +156,13 @@
                             <input type="hidden" name="tid" value="<%=result.getInt("tid")%>">
                             <input type="hidden" name="departure_time" value="<%=result.getString("departure_time")%>">
                             <input type="hidden" name="arrival_time" value="<%=result.getString("arrival_time")%>">
-                            <input type="hidden" name="origin" value="<%=origin%>">
-                            <input type="hidden" name="dest" value="<%=dest%>">
+                            <input type="hidden" name="origin" value="<%=result.getString("dsn")%>">
+                            <input type="hidden" name="dest" value="<%=result.getString("asn")%>">
                             <input type="hidden" name="fare" value="<%=result.getInt("fare")%>">
                             <input type="hidden" name="dtime" value="<%=request.getParameter("dtime")%>">
                             <input type="submit" value="Make Reservation">
-                        </form></td>
+                        </form>
+                    </td>
                 </tr>
                 <%
             }
