@@ -24,6 +24,12 @@
 <% // we need to modify stops_at, then train_schedule to preserve foreign key constraints
 //get additional data from trip and stops_at
 
+    if(session.getAttribute("valid_times") != null) {
+        out.print(session.getAttribute("valid_times"));
+    }
+
+
+
 String origin = request.getParameter("origin");
 String dest = request.getParameter("dest");
 String line = request.getParameter("line");

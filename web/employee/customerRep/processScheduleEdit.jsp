@@ -142,7 +142,7 @@
         }
 
         if(valid == false){
-            out.println("Invalid Times");
+            session.setAttribute("valid_times","Invalid Times Entered, Close and Try again.");
             db.closeConnection(con);
             response.sendRedirect("editScheduleView.jsp");
         }
@@ -209,6 +209,7 @@
             ps_sch.setString(3,tid);
             int res_update_sch = ps_sch.executeUpdate();
             db.closeConnection(con);
+            session.removeAttribute("valid_times");
             response.sendRedirect("empScheduleView.jsp");
         }
 
