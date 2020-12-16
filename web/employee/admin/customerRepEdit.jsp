@@ -92,16 +92,16 @@
             <input type="text" id="fname" name="fname">
             <br>
             <label for="lname">Last Name: </label>
-            <input type="text" id="lname" name="lname" value="<%=request.getParameter("lname")%>">
+            <input type="text" id="lname" name="lname">
             <br>
             <label for="user">Username: </label>
-            <input type="text" id="user" name="user" value="<%=request.getParameter("user")%>">
+            <input type="text" id="user" name="user">
             <br>
             <label for="pass">Password: </label>
-            <input type="text" id="pass" name="pass" value="<%=request.getParameter("pass")%>">
+            <input type="text" id="pass" name="pass">
             <br>
             <label for="auth">Authority level: </label>
-            <input type="text" id="auth" name="auth" value="<%=request.getParameter("auth")%>">
+            <input type="text" id="auth" name="auth">
             <br>
             <input type="submit" value="Create">
         </form>
