@@ -45,7 +45,7 @@
     /*
     try {
 
-        // returns the 5 most active lines, im guessing by reservations???
+        // returns the 5 most active lines, im guessing by reservations per month
         ApplicationDB db = new ApplicationDB();
         Connection con = db.getConnection();
 

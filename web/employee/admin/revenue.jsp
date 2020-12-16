@@ -38,24 +38,38 @@
 <body>
 
 <strong> Revenue</strong>
-<p> Here is the revenue by transit line: </p>
+<p> Here is the revenue by transit line or customer: </p>
 
 <%
-    /*
-    try {
 
-        // revenue by transit line
+    try {
+        // revenue by transit line or customer
         ApplicationDB db = new ApplicationDB();
         Connection con = db.getConnection();
 
+        String str = "SELECT * FROM train_schedule";
+        PreparedStatement ps = con.prepareStatement(str);
+        ResultSet res = ps.executeQuery();
+%>
+
+
+<%
+    //sum revenue by transit line or customer
+
+
+
+ %>
+
+
+
+<%
     }
     catch (Exception e) {
         e.printStackTrace();
     }
-
-     */
 %>
 
 </body>
 
 </html>
+

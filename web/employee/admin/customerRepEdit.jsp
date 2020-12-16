@@ -35,7 +35,7 @@
     /*
     try {
 
-        // can be by transit line OR customer name
+
         ApplicationDB db = new ApplicationDB();
         Connection con = db.getConnection();
 
