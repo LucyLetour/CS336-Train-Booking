@@ -22,11 +22,6 @@
     <li class="navbar-entry"><a href="adminSuccess.jsp">Admin Home</a></li>
     <li class="navbar-entry right-padding"><a id="logout" href="../../login/logout.jsp">Logout</a></li>
 </ul>
-<html>
-<head>
-    <title>Customer Rep Account</title>
-</head>
-<body>
 
 <strong> Control Customer Rep Accounts </strong>
 
@@ -39,7 +34,7 @@
         ApplicationDB db = new ApplicationDB();
         Connection con = db.getConnection();
     %>
-        <table border="2", align="center">
+        <table border="2" align="center">
         <thead>
         <tr>
             <th>Username</th>
@@ -57,8 +52,13 @@
                 <tr>
                     <td><%= res.getString("username")%></td>
                 <td>
-                <form method="post" action= "crEdit.jsp">
+                <form method="post" action= "repUpdateForm.jsp">
                 <input type="hidden" name="ssn" value="<%= res.getString("ssn")%>">
+                <input type="hidden" name="fname" value="<%=res.getString("firstname")%>">
+                <input type="hidden" name="lname" value="<%=res.getString("lastname")%>">
+                <input type="hidden" name="user" value="<%=res.getString("username")%>">
+                <input type="hidden" name="pass" value="<%=res.getString("pass")%>">
+                <input type="hidden" name="auth" value="<%=res.getString("authority")%>">
                 <input type="submit" value="Edit">
                 </form>
                 </td>
