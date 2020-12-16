@@ -8,7 +8,7 @@
 <head>
     <link rel="stylesheet" href="../../resources/navbar.css">
     <link rel="stylesheet" href="../../resources/base.css">
-    <title>Answer Question</title>
+    <title>Admin Home</title>
 </head>
 <body>
 
