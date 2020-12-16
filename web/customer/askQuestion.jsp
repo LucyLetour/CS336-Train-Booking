@@ -4,7 +4,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
     <head>
-        <title>Title</title>
+        <link rel="stylesheet" href="../resources/navbar.css">
+        <link rel="stylesheet" href="../resources/base.css">
+        <title>Ask us!</title>
     </head>
     <body>
         <script>
@@ -34,10 +36,17 @@
             ApplicationDB db = new ApplicationDB();
             Connection con = db.getConnection();
 
-            String insQ =
-                    "INSERT INTO unanswered_q (question, )" +
-                    "VALUES (?, ?)";
-            PreparedStatement ps;
+            if(request.getParameter("question") != null) {
+                String insQ =
+                        "INSERT INTO unanswered_q (question, customer_username)" +
+                                "VALUES (?, ?)";
+                PreparedStatement ps = con.prepareStatement(insQ);
+                ps.setString(1, request.getParameter("question"));
+                ps.setString(2, (String) session.getAttribute("user"));
+                ps.executeUpdate();
+                response.sendRedirect("questions.jsp");
+            }
+            con.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -7,7 +7,7 @@
     <head>
         <link rel="stylesheet" href="../resources/navbar.css">
         <link rel="stylesheet" href="../resources/base.css">
-        <title>My Reservations</title>
+        <title>Questions</title>
     </head>
     <body>
         <ul id="navbar" class="nav">
@@ -20,7 +20,7 @@
         <br>
         <form action="askQuestion.jsp" method="post"><input type="submit" value="Ask Question"></form>
         <br>
-        <form action="questions.jsp" method="get"><label for="searchKeywords">Search keywords: </label><input id="searchKeywords" name="searchKeywords" type="text"><input type="submit" value="Search"></form>
+        <form action="questions.jsp" method="get"><label for="searchKeywords">Search keywords: </label><input id="searchKeywords" name="searchKeywords" type="text" value="%"><input type="submit" value="Search"></form>
 
         <%
             try {
@@ -38,7 +38,7 @@
                     StringBuilder q = new StringBuilder("");
 
                     for (int i = 0; i < keywords.length; i++) {
-                        q.append(wordQuery.replace("?", "'% " + keywords[i] + " %'"));
+                        q.append(wordQuery.replace("?", "'%" + keywords[i] + "%'"));
 
                         if (i != keywords.length - 1) {
                             q.append("UNION ");
