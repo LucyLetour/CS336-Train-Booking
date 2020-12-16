@@ -17,12 +17,9 @@
             <li class="navbar-entry right-padding"><a id="logout" href="../login/logout.jsp">Logout</a></li>
         </ul>
 
-        <script>
-            function collapsibleOnClick(elem) {
-                let content = $(elem).next();
-                content.toggleClass("active");
-            }
-        </script>
+        <h1> My Reservations </h1>
+        <br>
+        <br>
 
         <% try {
             // Get the database connection
@@ -44,7 +41,7 @@
             String stationsBetween =
                     "SELECT stations.stationName name " +
                     "FROM stops_at sa, station_data stations " +
-                    "WHERE ? = sa.tid and stations.sid = sa.sid and sa.arrival_time >= ? and sa.departure_time <= ?";
+                    "WHERE ? = sa.tid and stations.sid = sa.sid and sa.arrival_time >= STR_TO_DATE(?, '%Y-%m-%d %H:%i') and sa.departure_time <= STR_TO_DATE(?, '%Y-%m-%d %H:%i')";
 
             String userReservations =
                     "SELECT o.sid osid, d.sid dsid, rd.reservationDate resDate, t.tid tid, rd.fare fare, rd.rid rid " +
@@ -66,8 +63,12 @@
 
             boolean pending = true;
 
+            int i = 0;
+
             // pog
             while (r.next()) {
+                i++;
+
                 if(r.getTimestamp("resDate").before(new java.util.Date())) {
                     pending = false;
                 }
@@ -96,7 +97,7 @@
                 ps = con.prepareStatement(stationsBetween);
                 ps.setInt(1, r.getInt("tid"));
                 ps.setTimestamp(2, r.getTimestamp("resDate"));
-                ps.setTimestamp(3, Timestamp.valueOf(arrTime));
+                ps.setString(3, arrTime);
                 temp = ps.executeQuery();
 
                 StringBuilder intermediates = new StringBuilder(oname);
@@ -106,19 +107,25 @@
                     intermediates.append(temp.getString("name")).append(" -> ");
                 }
 
-
                 String allStations = intermediates.append(dname).toString();
 
                 %>
-                <button type="button" class="collapsible" onclick="collapsibleOnClick(this.id)">Train <%=tid%> <%=oname%> -> <%=dname%> on <%=r.getTimestamp("resDate")%></button>
-                <div class="content, active">
-                    <p><%=allStations%>, $<%=r.getFloat("fare")%></p>
-                    <p><%=r.getTimestamp("resDate")%> to <%=arrTime%></p>
+                <button id="<%=i%>" type="button" class="collapsible" >Train <%=tid%> <%=oname%> -> <%=dname%> on <%=r.getTimestamp("resDate")%></button>
+                <div class="content flex-div" style>
                     <%
                         if (pending) { %>
-                            <form action="deleteReservation.jsp" method="post"><input type="hidden" name="rid" value="<%=r.getInt("rid")%>"><input type="submit" value="cancel"></form>
+                    <div class="cancel-div">
+                        <form action="deleteReservation.jsp" method="post"><input type="hidden" name="rid" value="<%=r.getInt("rid")%>"><input type="submit" value="Cancel Reservation"></form>
+                    </div>
                     <% }
                     %>
+
+                    <div class="data-div">
+                        <p><%=allStations%></p>
+                        <p><%=r.getTimestamp("resDate")%> to <%=arrTime%>, $<%=r.getFloat("fare")%></p>
+                    </div>
+
+
                 </div>
             <% }
 
@@ -126,6 +133,18 @@
             e.printStackTrace();
         }
         %>
+
+        <script>
+            $( 'button' ).on('click', function () {
+                $(this).toggleClass("c_active");
+                let content = $(this).next();
+                if (content.attr('style')){
+                    content.attr('style', null);
+                } else {
+                    content.attr('style', 'max-height: 144px;');
+                }
+            });
+        </script>
 
     </body>
 </html>

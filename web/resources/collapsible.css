@@ -1,30 +1,58 @@
 .collapsible {
-    background-color: #eee;
+    background-color: #f1f1f1;
     color: #444;
     cursor: pointer;
-    padding: 18px;
-    width: 100%;
+    padding: 20px 5%;
+    width: 80%;
     border: none;
     text-align: left;
     outline: none;
     font-size: 15px;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 10px;
 }
 
-.active, .collapsible:hover {
-    background-color: #ccc;
+.collapsible:hover {
+    background-color: #bbc9c9;
+}
+
+.c_active {
+    background-color: #d0d0d0;
+}
+
+.collapsible:after {
+    content: '\002B';
+    color: #0F1216;
+    font-weight: bold;
+    float: right;
+    margin-left: 5px;
+}
+
+.c_active:after {
+    content: "\2212";
+    color: #0F1216;
 }
 
 .content {
-    padding: 0 18px;
-    display: none;
-    overflow: hidden;
-    background-color: #f1f1f1;
-}
-
-.content {
-    padding: 0 18px;
-    background-color: white;
+    padding: 0 7%;
+    margin: 0 10%;
+    background-color: #c2c2c2;
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.2s ease-out;
+    transition: max-height 0.3s ease-out;
+}
+
+.flex-div {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.cancel-div {
+    height: auto;
+    align-self: center;
+}
+
+.data-div {
+    width: 100%;
 }

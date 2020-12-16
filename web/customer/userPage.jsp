@@ -19,9 +19,7 @@
             <li class="navbar-entry right-padding"><a id="logout" href="../login/logout.jsp">Logout</a></li>
         </ul>
         <br>
-        <%
-            out.print("Welcome, " + session.getAttribute("user"));
-        %>
+        <h3>Welcome <%=session.getAttribute("user")%></h3>
         <br>
         <% try {
             // Get the database connection
