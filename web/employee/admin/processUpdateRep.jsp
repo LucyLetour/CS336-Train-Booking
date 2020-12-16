@@ -25,6 +25,8 @@
         ps.setString(5,request.getParameter("auth"));
         ps.setString(6,request.getParameter("ssn"));
         ps.executeUpdate();
+
+        db.closeConnection(con);
         response.sendRedirect("customerRepEdit.jsp");
     }
     catch (Exception e){

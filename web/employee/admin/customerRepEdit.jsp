@@ -26,7 +26,11 @@
 <strong> Control Customer Rep Accounts </strong>
 
 <p> Here you can: add, delete, and edit Customer Representative Accounts</p>
-
+<%
+    if(session.getAttribute("user_status") != null) {
+        out.print(session.getAttribute("user_status"));
+    }
+%>
 <%
     try {
 
@@ -77,6 +81,31 @@
         %>
         </tbody>
         </table>
+        <br>
+        <p>Create an Account: </p>
+        <br>
+        <form method="post" action="addCustomerRep.jsp">
+            <label for="ssn">SSN: </label>
+            <input type="text" id="ssn" name="ssn">
+            <br>
+            <label for="fname">First Name: </label>
+            <input type="text" id="fname" name="fname">
+            <br>
+            <label for="lname">Last Name: </label>
+            <input type="text" id="lname" name="lname" value="<%=request.getParameter("lname")%>">
+            <br>
+            <label for="user">Username: </label>
+            <input type="text" id="user" name="user" value="<%=request.getParameter("user")%>">
+            <br>
+            <label for="pass">Password: </label>
+            <input type="text" id="pass" name="pass" value="<%=request.getParameter("pass")%>">
+            <br>
+            <label for="auth">Authority level: </label>
+            <input type="text" id="auth" name="auth" value="<%=request.getParameter("auth")%>">
+            <br>
+            <input type="submit" value="Create">
+        </form>
+
 
 
 <%
