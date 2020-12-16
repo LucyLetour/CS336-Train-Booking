@@ -35,9 +35,6 @@
     <label for="pass">Password: </label>
     <input type="text" id="pass" name="pass" value="<%=request.getParameter("pass")%>">
     <br>
-    <label for="auth">Authority level: </label>
-    <input type="text" id="auth" name="auth" value="<%=request.getParameter("auth")%>">
-    <br>
     <input type="submit" value="Update">
 </form>
 <br>

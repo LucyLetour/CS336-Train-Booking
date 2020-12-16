@@ -24,22 +24,23 @@
 
         if (res.next()){
             //cannot create account
-            session.setAttribute("user_status", "Account Creation Failed");
+            session.setAttribute("user_status", "Account Creation Failed - User SSN already exists");
+        }
+        else if (request.getParameter("ssn").length() > 11){
+            session.setAttribute("user_status","Account Creation Failed - Invalid SSN Length");
         }
         else{
             //create account
-            String ins = "INSERT INTO bookingsystem.employee_data VALUES (?,?,?,?,?,?)";
+            String ins = "INSERT INTO bookingsystem.employee_data VALUES (?,?,?,?,?,0)";
             PreparedStatement ps_insert = con.prepareStatement(ins);
             ps_insert.setString(1,request.getParameter("user"));
             ps_insert.setString(2,request.getParameter("pass"));
             ps_insert.setString(3,request.getParameter("ssn"));
             ps_insert.setString(4,request.getParameter("fname"));
             ps_insert.setString(5,request.getParameter("lname"));
-            ps_insert.setString(6,request.getParameter("auth"));
             ps_insert.executeUpdate();
             session.setAttribute("user_status", "Account Creation Success");
         }
-
 
 
 
