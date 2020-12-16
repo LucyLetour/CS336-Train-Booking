@@ -95,6 +95,10 @@ try {
             %>
         </select>
         <br>
+        <label for="depart">Departure Time</label>
+        <input type="text" id="depart" name="depart" value="<%=depart%>">
+
+        <br>
         <br>
         <%
             //generate drop downs for any intermediate stops along the way
@@ -138,14 +142,11 @@ try {
             %>
         </select>
         <br>
-        <label for="line">Train Line</label>
-        <input type="text" id="line" name="line" value="<%=line%>">
-        <br>
-        <label for="depart">Departure Time</label>
-        <input type="text" id="depart" name="depart" value="<%=depart%>">
-        <br>
         <label for="arrive">Arrival Time</label>
         <input type="text" id="arrive" name="arrive" value="<%=arrival%>">
+        <br>
+        <label for="line">Train Line</label>
+        <input type="text" id="line" name="line" value="<%=line%>">
         <br>
         <label for="fare">Fare</label>
         <input type="text" id="fare"  name="fare" value="<%=fare%>">
