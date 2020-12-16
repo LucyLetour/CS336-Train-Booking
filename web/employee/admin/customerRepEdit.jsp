@@ -2,6 +2,7 @@
 <%@ page import="java.sql.Connection" %>
 <%@ page import="java.sql.PreparedStatement" %>
 <%@ page import="java.sql.ResultSet" %>
+<%@ page import="javax.xml.transform.Result" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -32,19 +33,59 @@
 <p> Here you can: add, delete, and edit Customer Representative Accounts</p>
 
 <%
-    /*
     try {
 
 
         ApplicationDB db = new ApplicationDB();
         Connection con = db.getConnection();
+    %>
+        <table border="2", align="center">
+        <thead>
+        <tr>
+            <th>Username</th>
+        </tr>
+        </thead>
+        <tbody>
 
+        <%
+          String str= "SELECT * FROM employee_data";
+          PreparedStatement ps= con.prepareStatement(str);
+          ResultSet res= ps.executeQuery();
+
+          while(res.next()){
+              %>
+                <tr>
+                    <td><%= res.getString("username")%></td>
+                <td>
+                <form method="post" action= "CRedit.jsp">
+                <input type="hidden" name="ssn" value="<%= res.getString("ssn")%>">
+                <input type="submit" value="Edit">
+                </form>
+                </td>
+
+                <td>
+                <form method="post" action= "CRdel.jsp">
+                <input type="hidden" name="ssn" value="<%= res.getString("ssn")%>">
+                <input type="submit" value="Delete">
+                </form>
+                </td>
+                </tr>
+        <%
+
+          }
+
+        %>
+        </tbody>
+        </table>
+
+
+<%
     }
     catch (Exception e) {
         e.printStackTrace();
     }
 
-     */
+
 %>
 
 </body>
