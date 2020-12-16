@@ -35,7 +35,7 @@
 
 
             %>
-            <p> All Reservations </p>
+            <h3> All Reservations </h3>
             <table border="2" align="center">
                 <thead>
                     <tr>
