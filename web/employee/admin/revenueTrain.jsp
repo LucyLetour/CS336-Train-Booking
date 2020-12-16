@@ -18,7 +18,7 @@
 <%
 
     try {
-        // revenue by transit line or customer
+        // revenue by customer
         ApplicationDB db = new ApplicationDB();
         Connection con = db.getConnection();
 
@@ -29,13 +29,39 @@
 
 
 <%
-    //sum revenue by transit line or customer
+    //sum revenue by transit line
+    String newPass =
+            "SELECT ts.train_line, sum(ts.fare) sumFare "+
+                "FROM train_schedule ts "+
+                "GROUP BY ts.train_line ";
 
 
+    con.prepareStatement(newPass);
+    ps = con.prepareStatement(newPass);
+    ResultSet result = ps.executeQuery();
 
 %>
 
-
+<table border="2" align="center">
+    <thead>
+    <tr>
+        <th>Transit Line</th>
+        <th>Total Revenue</th>
+    </tr>
+    </thead>
+    <tbody>
+    <%
+        while(result.next()){
+    %>
+    <tr>
+        <td><%=result.getString("train_line")%></td>
+        <td><%=result.getInt("sumFare")%></td>
+    </tr>
+    <%
+        }
+    %>
+    </tbody>
+</table>
 
 <%
     }
