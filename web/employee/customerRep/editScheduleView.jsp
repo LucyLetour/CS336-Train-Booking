@@ -95,7 +95,7 @@ try {
         %>
         <label for="mid<%=i%>"> Intermediate Stop <%=i%></label>
         <select name="mid<%=i%>" id="mid<%=i%>">
-            <option value="%"></option>
+            <option value=""></option>
             <%
                 stationResults = ps_st.executeQuery();
                 while (stationResults.next()){

@@ -66,12 +66,18 @@
 
         //get sid for new intermediates
         for (int i=0;i<intermediate_num;i++){
-            String mid_query = "SELECT sid FROM bookingsystem.station_data WHERE stationName = ?";
-            PreparedStatement ps_mid = con.prepareStatement(mid_query);
-            ps_mid.setString(1,intermeds[i]);
-            ResultSet mid_result = ps_mid.executeQuery();
-            if (mid_result.next()){
-                intermed_sid[i] = mid_result.getInt("sid");
+
+            if (intermeds[i].equals("")){
+                intermed_sid[i] = -1;
+            }
+            else {
+                String mid_query = "SELECT sid FROM bookingsystem.station_data WHERE stationName = ?";
+                PreparedStatement ps_mid = con.prepareStatement(mid_query);
+                ps_mid.setString(1,intermeds[i]);
+                ResultSet mid_result = ps_mid.executeQuery();
+                if (mid_result.next()){
+                    intermed_sid[i] = mid_result.getInt("sid");
+                }
             }
         }
 
@@ -113,12 +119,22 @@
 
         //modify enrtry(s) for intermediate stations
         for (int i = 0; i < intermediate_num;i++){
-            String update_med = "UPDATE  bookingsystem.stops_at SET sid=?, is_origin = 0, is_dest = 0 WHERE tid = ? AND sid= ? ";
-            PreparedStatement ps_stops_med = con.prepareStatement(update_med);
-            ps_stops_med.setString(1,Integer.toString(intermed_sid[i]));
-            ps_stops_med.setString(2,tid);
-            ps_stops_med.setString(3,Integer.toString(old_intermed_sid[i]));
-            int res_stops_med = ps_stops_med.executeUpdate();
+
+            if (intermed_sid[i] == -1){
+                String del_med = "DELETE FROM bookingsystem.stops_at WHERE tid= ? AND sid = ?";
+                PreparedStatement ps_del = con.prepareStatement(del_med);
+                ps_del.setString(1,tid);
+                ps_del.setString(2,Integer.toString(old_intermed_sid[i]));
+                int res_del = ps_del.executeUpdate();
+            }
+            else {
+                String update_med = "UPDATE  bookingsystem.stops_at SET sid=?, is_origin = 0, is_dest = 0 WHERE tid = ? AND sid= ? ";
+                PreparedStatement ps_stops_med = con.prepareStatement(update_med);
+                ps_stops_med.setString(1,Integer.toString(intermed_sid[i]));
+                ps_stops_med.setString(2,tid);
+                ps_stops_med.setString(3,Integer.toString(old_intermed_sid[i]));
+                int res_stops_med = ps_stops_med.executeUpdate();
+            }
         }
 
 
