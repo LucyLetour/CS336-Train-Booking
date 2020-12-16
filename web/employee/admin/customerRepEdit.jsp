@@ -57,14 +57,14 @@
                 <tr>
                     <td><%= res.getString("username")%></td>
                 <td>
-                <form method="post" action= "CRedit.jsp">
+                <form method="post" action= "crEdit.jsp">
                 <input type="hidden" name="ssn" value="<%= res.getString("ssn")%>">
                 <input type="submit" value="Edit">
                 </form>
                 </td>
 
                 <td>
-                <form method="post" action= "CRdel.jsp">
+                <form method="post" action= "crDel.jsp">
                 <input type="hidden" name="ssn" value="<%= res.getString("ssn")%>">
                 <input type="submit" value="Delete">
                 </form>
