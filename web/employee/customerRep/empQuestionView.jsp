@@ -12,10 +12,10 @@
 <body>
 
     <ul id="navbar" class="nav">
-        <li class="navbar-entry"><a id="home-text" class="active" href="customerRepSuccess.jsp">Customer Rep Home</a></li>
+        <li class="navbar-entry"><a id="home-text" href="customerRepSuccess.jsp">Customer Rep Home</a></li>
         <li class="navbar-entry"><a href="empScheduleView.jsp">Schedules</a></li>
         <li class="navbar-entry"><a href="empReservationView.jsp">Reservations</a></li>
-        <li class="navbar-entry"><a href="empQuestionView.jsp">Q & A</a></li>
+        <li class="navbar-entry"><a class="active" href="empQuestionView.jsp">Q & A</a></li>
         <li class="navbar-entry right-padding"><a id="logout" href="../../login/logout.jsp">Logout</a></li>
     </ul>
 
