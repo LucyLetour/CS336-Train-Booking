@@ -39,14 +39,13 @@
             String raw_date_input = request.getParameter("date");
             String transit = request.getParameter("transit");
             String d;
-            String t;
+
             String date_input = "";
 
             if (!raw_date_input.equals("")) {
                 d = raw_date_input.substring(0,10);
-                t = raw_date_input.substring(11);
 
-                date_input = d + " " +t;
+                date_input = d;
             }
 
 
@@ -96,7 +95,7 @@
                 }
 
 
-                if (train_line.equals(transit) && date.substring(0,16).equals(date_input)){
+                if (train_line.equals(transit) && date.substring(0,10).equals(date_input)){
                     %>
                     <tr>
                         <td><%=result.getString("username")%></td>
