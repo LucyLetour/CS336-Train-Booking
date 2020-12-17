@@ -1,9 +1,5 @@
 <%@ page import="db.ApplicationDB" %>
 <%@ page import="java.sql.*" %>
-<%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="java.util.Date" %>
-<%@ page import="java.util.Calendar" %>
-<%@ page import="java.text.DateFormat" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page import="java.time.LocalDateTime" %>
 <%@ page contentType="text/html;charset=UTF-8"%>
