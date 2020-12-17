@@ -18,8 +18,6 @@
         </ul>
 
         <h1> My Reservations </h1>
-        <br>
-        <br>
 
         <% try {
             // Get the database connection
@@ -63,12 +61,8 @@
 
             boolean pending = true;
 
-            int i = 0;
-
             // pog
             while (r.next()) {
-                i++;
-
                 if(r.getTimestamp("resDate").before(new java.util.Date())) {
                     pending = false;
                 }
@@ -96,7 +90,7 @@
 
                 ps = con.prepareStatement(stationsBetween);
                 ps.setInt(1, r.getInt("tid"));
-                ps.setTimestamp(2, r.getTimestamp("resDate"));
+                ps.setString(2, String.valueOf(r.getTimestamp("resDate")));
                 ps.setString(3, arrTime);
                 temp = ps.executeQuery();
 
@@ -110,7 +104,7 @@
                 String allStations = intermediates.append(dname).toString();
 
                 %>
-                <button id="<%=i%>" type="button" class="collapsible" >Train <%=tid%> <%=oname%> -> <%=dname%> on <%=r.getTimestamp("resDate")%></button>
+                <button type="button" class="collapsible" >Train <%=tid%> <%=oname%> -> <%=dname%> on <%=r.getTimestamp("resDate").toLocalDateTime().toLocalDate()%></button>
                 <div class="content flex-div" style>
                     <%
                         if (pending) { %>
@@ -133,6 +127,11 @@
             e.printStackTrace();
         }
         %>
+
+        <br>
+        <br>
+        <br>
+        <br>
 
         <script>
             $( 'button' ).on('click', function () {

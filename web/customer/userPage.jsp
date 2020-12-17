@@ -1,6 +1,11 @@
 <%@ page import="db.ApplicationDB" %>
 <%@ page import="java.sql.*" %>
 <%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.Date" %>
+<%@ page import="java.util.Calendar" %>
+<%@ page import="java.text.DateFormat" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="java.time.LocalDateTime" %>
 <%@ page contentType="text/html;charset=UTF-8"%>
 
 <html>
@@ -11,22 +16,21 @@
     </head>
 
     <body>
-
         <ul id="navbar" class="nav">
             <li class="navbar-entry"><a id="home-text" class="active" href="userPage.jsp">Schedule</a></li>
             <li class="navbar-entry"><a href="reservations.jsp">My Reservations</a></li>
             <li class="navbar-entry"><a href="questions.jsp">Questions</a></li>
             <li class="navbar-entry right-padding"><a id="logout" href="../login/logout.jsp">Logout</a></li>
         </ul>
+        <div style="width: 95%; margin-left: auto; margin-right: auto">
         <br>
-        <h3>Welcome <%=session.getAttribute("user")%></h3>
+        <h4>Welcome, <%=session.getAttribute("user")%></h4>
         <br>
         <% try {
             // Get the database connection
             ApplicationDB db = new ApplicationDB();
             Connection con = db.getConnection();
             %>
-
 
             <form method="GET">
                 <label for="origin">Origin Station:</label>
@@ -59,10 +63,10 @@
                 <label for="dtime">Departure Time:</label>
                 <input type="datetime-local" name="dtime" id="dtime" value="<%=request.getParameter("dtime")%>">
                 <label for="sortby">Sort by: </label>
-                <select name="sortby" id="sortby" value="<%=request.getParameter("sortby")%>">
-                    <option selected value="departure_time">Departure Time</option>
-                    <option value="arrival_time">Arrival Time</option>
-                    <option value="fare">Fare</option>
+                <select name="sortby" id="sortby">
+                    <option <%="departure_time".equals(request.getParameter("sortby")) ? "selected" : ""%> value="departure_time">Departure Time</option>
+                    <option <%="arrival_time".equals(request.getParameter("sortby")) ? "selected" : ""%> value="arrival_time">Arrival Time</option>
+                    <option <%="fare".equals(request.getParameter("sortby")) ? "selected" : ""%> value="fare">Fare</option>
                 </select>
                 <input type="submit" value="Search">
             </form>
@@ -75,8 +79,16 @@
             // Get info from GET
             String origin = request.getParameter("origin");
             String dest = request.getParameter("dest");
-            String dtime = request.getParameter("dtime").replace("T", " ").replace("%3A", ":"); //YYYY-MM-DDThh%3Amm -> YYYY-MM-DD hh:mm
-            String sortby = request.getParameter("sortby");
+            String dtime = request.getParameter("dtime");
+            @SuppressWarnings("SqlResolve") String sortby = request.getParameter("sortby");
+
+            origin = origin == null ? "%" : origin;
+            dest = dest == null ? "%" : dest;
+
+            dtime = (dtime == null ? LocalDateTime.now().toString() : dtime).replace("T", " ").replace("%3A", ":"); //YYYY-MM-DDThh%3Amm -> YYYY-MM-DD hh:mm
+            sortby = sortby == null ? "departure_time" : sortby;
+
+            System.out.println(dtime);
 
             String allTrains =
                     "SELECT ts.tid, ts.train_line, ts.fare, sa.arrival_time, sa.departure_time, sd.stationName, sd.sid " +
@@ -116,17 +128,17 @@
                             "FROM stops_at sa " +
                             "WHERE bt.tid = sa.tid "+
                     ")) as fare, bt.dsn dsn, bt.departure_time departure_time, bt.asn asn, bt.arrival_time arrival_time " +
-                    "FROM ("+ routes +") bt";
+                    "FROM ("+ routes +") bt " +
+                    "ORDER BY " + sortby;
 
-
-            ps = con.prepareStatement(bigTable + " ORDER BY " + sortby);
+            ps = con.prepareStatement(bigTable);
             ps.setString(1, origin);
             ps.setString(2, dtime);
             ps.setString(3, dest);
             ResultSet result = ps.executeQuery();
 
         %>
-        <table border="2" align="center">
+        <table>
             <thead>
                 <tr>
                     <th> Train Line </th>
@@ -149,6 +161,11 @@
                     <td><%=result.getString("asn")%></td>
                     <td><%=result.getString("arrival_time")%></td>
                     <td>$<%=result.getString("fare")%></td>
+                    <%
+                        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                        LocalDateTime dDate = LocalDateTime.parse(result.getString("departure_time"), dateTimeFormatter);
+                        if(dDate.isAfter(LocalDateTime.now())) {
+                    %>
                     <td>
                         <form action="makeReservationPage.jsp" method="post">
                             <input type="hidden" name="tid" value="<%=result.getInt("tid")%>">
@@ -161,6 +178,9 @@
                             <input type="submit" value="Make Reservation">
                         </form>
                     </td>
+                    <%
+                        }
+                    %>
                 </tr>
                 <%
             }
@@ -170,5 +190,6 @@
         } catch (Exception e) {
             e.printStackTrace();
         } %>
+    </div>
     </body>
 </html>

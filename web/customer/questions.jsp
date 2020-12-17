@@ -16,19 +16,35 @@
             <li class="navbar-entry"><a class="active" href="questions.jsp">Questions</a></li>
             <li class="navbar-entry right-padding"><a id="logout" href="../login/logout.jsp">Logout</a></li>
         </ul>
+        <div style="width: 95%; margin-left: auto; margin-right: auto">
 
-        <br>
-        <form action="askQuestion.jsp" method="post"><input type="submit" value="Ask Question"></form>
-        <br>
-        <form action="questions.jsp" method="get"><label for="searchKeywords">Search keywords: </label><input id="searchKeywords" name="searchKeywords" type="text" value="%"><input type="submit" value="Search"></form>
+            <br>
 
-        <%
-            try {
-                ApplicationDB db = new ApplicationDB();
-                Connection con = db.getConnection();
+            <br>
+            <table style="border: none">
+                <tbody>
+                    <td style="border: none">
+                        <form action="questions.jsp" method="get"><label for="searchKeywords">Search keywords: </label><input id="searchKeywords" name="searchKeywords" type="text"><input type="submit" value="Search"></form>
+                    </td>
+                    <td style="border: none">
+                        <form action="askQuestion.jsp" method="post"><input type="submit" value="Ask Question"></form>
+                    </td>
+                </tbody>
+            </table>
 
-                if (request.getParameter("searchKeywords") != null) {
-                    String[] keywords = request.getParameter("searchKeywords").split(" ");
+
+            <%
+                try {
+                    ApplicationDB db = new ApplicationDB();
+                    Connection con = db.getConnection();
+
+                    String[] keywords;
+
+                    if (request.getParameter("searchKeywords") == null) {
+                        keywords = new String[] {"%"};
+                    } else {
+                        keywords = request.getParameter("searchKeywords").split(" ");
+                    }
 
                     String wordQuery =
                             "SELECT * " +
@@ -53,6 +69,8 @@
                     PreparedStatement ps = con.prepareStatement(priorityQuery);
                     ResultSet r = ps.executeQuery();
                     %>
+            <br>
+            <br>
                     <table border="2" align="center">
                         <thead>
                         <tr>
@@ -68,10 +86,10 @@
                                 <td><%=r.getString("answer")%></td>
                             </tr>
                         <% }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        %>
+            %>
+        </div>
     </body>
 </html>

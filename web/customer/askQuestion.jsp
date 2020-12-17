@@ -29,7 +29,16 @@
             <li class="navbar-entry"><a href="questions.jsp">Questions</a></li>
             <li class="navbar-entry right-padding"><a id="logout" href="../login/logout.jsp">Logout</a></li>
         </ul>
-        <form method="post"><label for="question">Question: </label><input id="question" name="question" type="text"><input type="submit" value="Search"></form>
+
+        <div style="width: 90%; margin-right: auto; margin-left: auto;">
+            <form method="post" id="qForm" onsubmit="setSubmittingForm()">
+                <h2>Question: </h2>
+                <br>
+                <textarea id="question" rows="4" cols="100" name="question" form="qForm" style="margin-left: auto; margin-right: auto"></textarea>
+                <br>
+                <input type="submit" value="   Ask   " style="margin-right: 0">
+            </form>
+        </div>
 
     <%
         try {
