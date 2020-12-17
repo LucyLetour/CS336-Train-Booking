@@ -30,7 +30,7 @@
         ResultSet res = ps.executeQuery();
 
 %>
-<p> All Scheduled Trips</p>
+<h3> All Scheduled Trips</h3>
 <table border="2" align="center">
     <thead>
     <tr>
@@ -106,7 +106,7 @@
 %>
 <br>
 <br>
-<p> Search For Schedules</p>
+<h3> Search For Schedules</h3>
 <form method="post" action="searchResults.jsp">
     <label for="origin">Origin Station: </label>
     <select id="origin" name="origin">
