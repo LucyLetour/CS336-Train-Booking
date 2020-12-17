@@ -58,14 +58,17 @@
     //need to return customer with most revenue created
 
     String newPass =
-            "SELECT cd.firstname, cd.lastname, MAX(sumF.sumFare) "+
+            "SELECT cd.firstname, cd.lastname, sumF.sumFare "+
             "FROM (SELECT p.username, sum(res.fare) sumFare "+
             "FROM passenger p "+
             "INNER JOIN reservation_data res "+
             "ON p.rid = res.rid "+
             "GROUP BY p.username) sumF "+
             "INNER JOIN customer_data cd "+
-            "ON cd.username = sumF.username ";
+            "ON cd.username = sumF.username "+
+            "ORDER BY sumF.sumFare desc " +
+            "LIMIT 1 ";
+
 
     //join pass res_d on rid, username and fare , sum fare gb username, max select
 
