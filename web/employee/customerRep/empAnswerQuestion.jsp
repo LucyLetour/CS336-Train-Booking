@@ -25,7 +25,7 @@
         <input type="hidden" name="question" value="<%=request.getParameter("question")%>">
         <input type="hidden" name="cust_user" value="<%=request.getParameter("cust_user")%>">
         <input type="hidden" name="qid" value="<%=request.getParameter("qid")%>">
-        <input type="text" name="answer_text">
+        <textarea rows="4" cols="100" id="answer_text" name="answer_text"></textarea>
         <input type="submit" value="Answer">
     </form>
 
